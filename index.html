@@ -165,6 +165,32 @@ footer .big{font-family:var(--font-d);font-size:clamp(2rem,6vw,3.4rem);color:var
 footer .big em{font-style:italic;color:var(--lime)}
 footer .big .tag-logo{height:.82em;width:auto;display:inline-block;vertical-align:-.1em;margin-left:.28em}
 
+/* ----- polish mobile ----- */
+.form-note{font-size:.95rem;min-height:1.5em;color:var(--muted)}
+.form-note.ok{color:#a8e08a}
+.form-note.err{color:#f0a892}
+.form-note.err a{color:var(--lime);text-decoration:underline}
+.btn[disabled]{opacity:.65;cursor:wait;transform:none;box-shadow:none}
+@media(max-width:900px){
+  nav{padding:.8rem 1rem}
+  .logo img{height:38px}
+  .nav-cta .btn{padding:.7rem 1.15rem;font-size:.82rem}
+  .hero{padding-top:6.5rem;min-height:94svh}
+  .crescent{width:120px;top:11%;right:3%;opacity:.55}
+  .hero-foot{font-size:.7rem;gap:.7rem}
+}
+@media(max-width:600px){
+  .nav-cta .btn{display:none}
+  .hero h1{font-size:clamp(2.55rem,11.5vw,3.4rem)}
+  .hero-sub{margin:1.4rem 0 2rem}
+  .hero-ctas{flex-direction:column;align-items:stretch}
+  .hero-ctas .btn{justify-content:center}
+  .svc-name{line-height:1.18}
+  .mail-link{font-size:1.12rem;word-break:break-all}
+  .field input,.field textarea{font-size:16px}
+  section{padding-top:3.5rem;padding-bottom:3.5rem}
+}
+
 /* reveal */
 .rv{opacity:0;transform:translateY(36px);transition:opacity .8s cubic-bezier(.2,.6,.2,1),transform .8s cubic-bezier(.2,.6,.2,1)}
 .rv.in{opacity:1;transform:none}
@@ -312,6 +338,7 @@ footer .big .tag-logo{height:.82em;width:auto;display:inline-block;vertical-alig
         <textarea id="f-msg" name="message" required></textarea>
       </div>
       <button class="btn" type="submit" data-fr="Envoyer le message" data-en="Send message">Envoyer le message</button>
+      <p class="form-note" id="form-note" aria-live="polite"></p>
     </form>
   </div>
 </section>
@@ -348,6 +375,8 @@ footer .big .tag-logo{height:.82em;width:auto;display:inline-block;vertical-alig
     });
     document.title = l==="fr" ? "Axe C — Studio de design & communications"
                               : "Axe C — Design & communications studio";
+    var fn = document.getElementById("form-note");
+    if(fn){ fn.textContent=""; fn.className="form-note"; }
     buildMarquee();
   }
   document.getElementById("btn-fr").addEventListener("click", function(){ setLang("fr"); });
@@ -385,15 +414,50 @@ footer .big .tag-logo{height:.82em;width:auto;display:inline-block;vertical-alig
     el.addEventListener("mouseleave", function(){ ring.classList.remove("is-hover"); });
   });
 
-  /* ----- formulaire -> mailto ----- */
+  /* ----- formulaire -> envoi direct ----- */
   document.getElementById("contact-form").addEventListener("submit", function(e){
     e.preventDefault();
+    var form = e.target,
+        btn = form.querySelector('button[type="submit"]'),
+        note = document.getElementById("form-note");
+    if(!btn) btn = form.querySelector("button");
     var n=document.getElementById("f-name").value.trim(),
         m=document.getElementById("f-email").value.trim(),
         b=document.getElementById("f-msg").value.trim();
-    var subject = encodeURIComponent((lang==="fr"?"Évaluation gratuite — ":"Free evaluation — ")+n);
-    var body = encodeURIComponent(b+"\n\n— "+n+" ("+m+")");
-    location.href = "mailto:contact@axecstudio.com?subject="+subject+"&body="+body;
+    if(!n||!m||!b) return;
+    var sendLabel = lang==="fr"?"Envoyer le message":"Send message";
+    btn.disabled = true;
+    btn.textContent = lang==="fr" ? "Envoi en cours…" : "Sending…";
+    note.className = "form-note"; note.textContent = "";
+    fetch("/api/contact", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({name:n, email:m, message:b, lang:lang})
+    }).then(function(r){
+      return r.json().then(function(d){ return {ok:r.ok, d:d}; });
+    }).then(function(res){
+      if(res.ok){
+        note.className = "form-note ok";
+        note.textContent = lang==="fr"
+          ? "Message envoyé — je vous réponds vite."
+          : "Message sent — I'll get back to you soon.";
+        form.reset();
+      } else { throw new Error("send_failed"); }
+    }).catch(function(){
+      note.className = "form-note err";
+      var prefix = lang==="fr"
+        ? "Oups, l'envoi a échoué — écrivez-moi directement : "
+        : "Something went wrong — email me directly: ";
+      note.innerHTML = "";
+      note.appendChild(document.createTextNode(prefix));
+      var a = document.createElement("a");
+      a.href = "mailto:contact@axecstudio.com";
+      a.textContent = "contact@axecstudio.com";
+      note.appendChild(a);
+    }).then(function(){
+      btn.disabled = false;
+      btn.textContent = sendLabel;
+    });
   });
 
   setLang(lang);
