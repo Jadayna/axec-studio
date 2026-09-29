@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Axe C — Studio de design & communications</title>
-<meta name="description" content="Axe C — design graphique, réseaux sociaux, rédaction bilingue et soutien administratif pour organismes, entrepreneurs et petites équipes. Basée à Niverville, MB. FR/EN.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101210'/%3E%3Cpath d='M44 20c-4-6-11-9-17-7-8 3-12 12-9 20s12 12 20 9c4-2 7-5 8-9' stroke='%23c8f04a' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta name="description" content="Axe C — design graphique, réseaux sociaux, rédaction bilingue et soutien administratif pour organismes, entrepreneurs et petites équipes. Basée à Manitoba. FR/EN.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101210'/%3E%3Cpath d='M44 20c-4-6-11-9-17-7-8 3-12 12-9 20s12 12 20 9c4-2 7-5 8-9' stroke='%23ffd23f' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#101210; --bg2:#161814; --ink:#f5f3ec; --muted:#9a9e8c;
-  --lime:#c8f04a; --lime-dim:#9db83a; --line:rgba(245,243,236,.14);
+  --lime:#ffd23f; --lime-dim:#d9a91f; --line:rgba(245,243,236,.14);
   --paper:#f5f3ec; --paper-ink:#14150f;
   --font-d:"Fraunces",serif; --font-b:"Space Grotesk",sans-serif;
 }
@@ -34,7 +34,7 @@ img{max-width:100%}
 .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:3000;border-radius:50%;
   transform:translate(-50%,-50%)}
 .cursor-dot{width:8px;height:8px;background:var(--lime)}
-.cursor-ring{width:36px;height:36px;border:1px solid rgba(200,240,74,.6);transition:width .25s,height .25s,border-color .25s}
+.cursor-ring{width:36px;height:36px;border:1px solid rgba(255,210,63,.6);transition:width .25s,height .25s,border-color .25s}
 .cursor-ring.is-hover{width:64px;height:64px;border-color:var(--lime)}
 @media(hover:none){.cursor-dot,.cursor-ring{display:none}}
 
@@ -56,7 +56,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .btn{display:inline-flex;align-items:center;gap:.6rem;background:var(--lime);color:#101210;font-weight:600;
   padding:.85rem 1.6rem;border-radius:99px;border:none;cursor:pointer;font-size:.95rem;font-family:var(--font-b);
   transition:transform .25s,box-shadow .25s;white-space:nowrap}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,240,74,.35)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,210,63,.35)}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .btn.ghost:hover{border-color:var(--lime);box-shadow:none}
 @media(max-width:860px){.nav-links{display:none}}
@@ -66,7 +66,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
   padding:7rem clamp(1.2rem,4vw,3rem) 3rem;overflow:hidden}
 .hero-bg{position:absolute;inset:0;pointer-events:none}
 .blob{position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(120px);opacity:.16;
-  background:radial-gradient(circle,#c8f04a 0%,transparent 65%);top:-20vmax;right:-15vmax;animation:drift 14s ease-in-out infinite alternate}
+  background:radial-gradient(circle,#ffd23f 0%,transparent 65%);top:-20vmax;right:-15vmax;animation:drift 14s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translate(-8vmax,6vmax) scale(1.15)}}
 .axis{position:absolute;background:var(--line)}
 .axis.h{left:0;right:0;height:1px;top:38%}
@@ -118,11 +118,11 @@ section{padding:clamp(4rem,9vw,8rem) clamp(1.2rem,4vw,3rem)}
 
 /* approche — section papier */
 .approche{background:var(--paper);color:var(--paper-ink);position:relative;overflow:hidden}
-.approche .sec-tag{color:#5c6b1f}
-.approche .sec-tag::before{background:#5c6b1f}
+.approche .sec-tag{color:#8a6d1a}
+.approche .sec-tag::before{background:#8a6d1a}
 .approche blockquote{font-family:var(--font-d);font-size:clamp(2.2rem,6vw,4.6rem);line-height:1.08;font-weight:500;
   letter-spacing:-.015em;max-width:18ch}
-.approche blockquote em{font-style:italic;color:#5c6b1f}
+.approche blockquote em{font-style:italic;color:#8a6d1a}
 .approche-sub{margin-top:2rem;color:#4c5240;max-width:58ch;font-size:1.1rem}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(20,21,15,.12);margin-top:4rem;border:1px solid rgba(20,21,15,.12)}
 .stat{background:var(--paper);padding:2rem 1.5rem}
@@ -177,7 +177,7 @@ footer .big em{font-style:italic;color:var(--lime)}
 
 <nav>
   <a class="logo" href="#top" aria-label="Axe C — accueil">
-    <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#161814"/><path d="M44 20c-4-6-11-9-17-7-8 3-12 12-9 20s12 12 20 9c4-2 7-5 8-9" stroke="#c8f04a" stroke-width="7" fill="none" stroke-linecap="round"/></svg>
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#161814"/><path d="M44 20c-4-6-11-9-17-7-8 3-12 12-9 20s12 12 20 9c4-2 7-5 8-9" stroke="#ffd23f" stroke-width="7" fill="none" stroke-linecap="round"/></svg>
     Axe&nbsp;C
   </a>
   <div class="nav-links">
@@ -199,9 +199,9 @@ footer .big em{font-style:italic;color:var(--lime)}
   <div class="hero-bg" aria-hidden="true">
     <div class="blob"></div>
     <div class="axis h"></div><div class="axis v"></div>
-    <svg class="crescent" viewBox="0 0 200 200"><path d="M150 40c-14-20-38-30-60-24-28 8-44 38-34 66s38 44 66 34c14-5 24-16 28-30" stroke="#c8f04a" stroke-width="10" fill="none" stroke-linecap="round" opacity=".8"/><circle cx="100" cy="100" r="86" stroke="rgba(245,243,236,.18)" stroke-width="1" fill="none" stroke-dasharray="4 8"/></svg>
+    <svg class="crescent" viewBox="0 0 200 200"><path d="M150 40c-14-20-38-30-60-24-28 8-44 38-34 66s38 44 66 34c14-5 24-16 28-30" stroke="#ffd23f" stroke-width="10" fill="none" stroke-linecap="round" opacity=".8"/><circle cx="100" cy="100" r="86" stroke="rgba(245,243,236,.18)" stroke-width="1" fill="none" stroke-dasharray="4 8"/></svg>
   </div>
-  <p class="hero-eyebrow rv" data-fr="Studio de design & communications — Niverville, Manitoba" data-en="Design & communications studio — Niverville, Manitoba">Studio de design & communications — Niverville, Manitoba</p>
+  <p class="hero-eyebrow rv" data-fr="Studio de design & communications — Manitoba" data-en="Design & communications studio — Manitoba">Studio de design & communications — Manitoba</p>
   <h1 class="rv" data-fr="Votre travail mérite une <em>image</em> à la hauteur." data-en="Your work deserves a <em>face</em> that matches it.">Votre travail mérite une <em>image</em> à la hauteur.</h1>
   <p class="hero-sub rv" data-fr="Design graphique, réseaux sociaux, soutien administratif et rédaction bilingue — pour les organismes, entrepreneurs solos et petites équipes qui préfèrent se concentrer sur le travail, pas la paperasse." data-en="Graphic design, social media, admin support, and bilingual copy — for organizations, solo entrepreneurs, and small teams who'd rather focus on the work than the paperwork.">Design graphique, réseaux sociaux, soutien administratif et rédaction bilingue — pour les organismes, entrepreneurs solos et petites équipes qui préfèrent se concentrer sur le travail, pas la paperasse.</p>
   <div class="hero-ctas rv">
@@ -278,12 +278,12 @@ footer .big em{font-style:italic;color:var(--lime)}
   <div class="apropos-grid">
     <div class="apropos-txt rv">
       <p data-fr="Que vous soyez un organisme, un entrepreneur solo ou une petite équipe en croissance, le travail de coulisses peut vite devenir écrasant. <strong>Axe C existe pour ça : le prendre en charge, avec soin et constance.</strong>" data-en="Whether you're an organization, a solo entrepreneur, or a growing team, behind-the-scenes work can quickly become overwhelming. <strong>Axe C exists for that: to take it off your plate — carefully, and consistently.</strong>">Que vous soyez un organisme, un entrepreneur solo ou une petite équipe en croissance, <strong>Axe C existe pour ça : le prendre en charge, avec soin et constance.</strong></p>
-      <p data-fr="Née au Québec et établie à Niverville, au Manitoba, je travaille à distance avec des clients partout au pays — en français comme en anglais. Une interlocutrice unique, qui connaît votre dossier par cœur." data-en="Born in Quebec and based in Niverville, Manitoba, I work remotely with clients across the country — in French and in English alike. One point of contact, who knows your file by heart.">Née au Québec et établie à Niverville, au Manitoba, je travaille à distance avec des clients partout au pays — en français comme en anglais. Une interlocutrice unique, qui connaît votre dossier par cœur.</p>
+      <p data-fr="Née au Québec et établie au Manitoba, je travaille à distance avec des clients partout au pays — en français comme en anglais. Une interlocutrice unique, qui connaît votre dossier par cœur." data-en="Born in Quebec and based in Manitoba, I work remotely with clients across the country — in French and in English alike. One point of contact, who knows your file by heart.">Née au Québec et établie au Manitoba, je travaille à distance avec des clients partout au pays — en français comme en anglais. Une interlocutrice unique, qui connaît votre dossier par cœur.</p>
     </div>
     <div class="facts rv">
       <div class="fact"><span data-fr="Fondée" data-en="Founded">Fondée</span><span>2023</span></div>
       <div class="fact"><span data-fr="Origine" data-en="From">Origine</span><span data-fr="Québec" data-en="Quebec">Québec</span></div>
-      <div class="fact"><span data-fr="Basée à" data-en="Based in">Basée à</span><span>Niverville, MB</span></div>
+      <div class="fact"><span data-fr="Basée à" data-en="Based in">Basée à</span><span>Manitoba</span></div>
       <div class="fact"><span data-fr="Disponibilité" data-en="Availability">Disponibilité</span><span data-fr="À distance, partout au Canada" data-en="Remote, across Canada">À distance, partout au Canada</span></div>
       <div class="fact"><span data-fr="Langues" data-en="Languages">Langues</span><span>FR / EN</span></div>
     </div>
@@ -318,7 +318,7 @@ footer .big em{font-style:italic;color:var(--lime)}
 
 <footer>
   <p class="big rv" data-fr="Donnons à votre travail <em>l'image</em> qu'il mérite." data-en="Give your work the <em>face</em> it deserves.">Donnons à votre travail <em>l'image</em> qu'il mérite.</p>
-  <span>© 2026 Axe C Studio — Niverville, MB</span>
+  <span>© 2026 Axe C Studio — Manitoba</span>
   <span><a href="mailto:contact@axecstudio.com">contact@axecstudio.com</a></span>
   <span data-fr="Fait avec soin au Manitoba" data-en="Carefully made in Manitoba">Fait avec soin au Manitoba</span>
 </footer>
