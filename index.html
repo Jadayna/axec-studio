@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axe C — Studio de design & communications</title>
+<meta name="description" content="Axe C — design graphique, réseaux sociaux, rédaction bilingue et soutien administratif pour organismes, entrepreneurs et petites équipes. Basée à Niverville, MB. FR/EN.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101210'/%3E%3Cpath d='M44 20c-4-6-11-9-17-7-8 3-12 12-9 20s12 12 20 9c4-2 7-5 8-9' stroke='%23c8f04a' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101210; --bg2:#161814; --ink:#f5f3ec; --muted:#9a9e8c;
+  --lime:#c8f04a; --lime-dim:#9db83a; --line:rgba(245,243,236,.14);
+  --paper:#f5f3ec; --paper-ink:#14150f;
+  --font-d:"Fraunces",serif; --font-b:"Space Grotesk",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-weight:300;
+  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--lime);color:#101210}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+
+/* grain */
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:2000;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(10) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-2%)}80%{transform:translate(3%,3%)}}
+
+/* curseur */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:3000;border-radius:50%;
+  transform:translate(-50%,-50%)}
+.cursor-dot{width:8px;height:8px;background:var(--lime)}
+.cursor-ring{width:36px;height:36px;border:1px solid rgba(200,240,74,.6);transition:width .25s,height .25s,border-color .25s}
+.cursor-ring.is-hover{width:64px;height:64px;border-color:var(--lime)}
+@media(hover:none){.cursor-dot,.cursor-ring{display:none}}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem clamp(1.2rem,4vw,3rem);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:rgba(16,18,16,.55);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:.6rem;font-family:var(--font-d);font-weight:600;font-size:1.35rem;letter-spacing:.02em}
+.logo svg{width:30px;height:30px}
+.nav-links{display:flex;gap:2rem;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase}
+.nav-links a{position:relative;color:var(--muted);transition:color .25s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:1px;background:var(--lime);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-cta{display:flex;align-items:center;gap:1rem}
+.lang-toggle{display:flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;font-size:.75rem;letter-spacing:.1em}
+.lang-toggle button{background:none;border:none;color:var(--muted);padding:.45rem .8rem;cursor:pointer;font-family:var(--font-b);transition:all .25s}
+.lang-toggle button.active{background:var(--lime);color:#101210;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:.6rem;background:var(--lime);color:#101210;font-weight:600;
+  padding:.85rem 1.6rem;border-radius:99px;border:none;cursor:pointer;font-size:.95rem;font-family:var(--font-b);
+  transition:transform .25s,box-shadow .25s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,240,74,.35)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--lime);box-shadow:none}
+@media(max-width:860px){.nav-links{display:none}}
+
+/* hero */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;position:relative;
+  padding:7rem clamp(1.2rem,4vw,3rem) 3rem;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.blob{position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(120px);opacity:.16;
+  background:radial-gradient(circle,#c8f04a 0%,transparent 65%);top:-20vmax;right:-15vmax;animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(-8vmax,6vmax) scale(1.15)}}
+.axis{position:absolute;background:var(--line)}
+.axis.h{left:0;right:0;height:1px;top:38%}
+.axis.v{top:0;bottom:0;width:1px;left:12%}
+.hero-eyebrow{display:flex;align-items:center;gap:.8rem;color:var(--lime);font-size:.8rem;letter-spacing:.22em;
+  text-transform:uppercase;margin-bottom:1.5rem}
+.hero-eyebrow::before{content:"";width:34px;height:1px;background:var(--lime)}
+.hero h1{font-family:var(--font-d);font-weight:550;font-size:clamp(3rem,10vw,8.5rem);line-height:.98;letter-spacing:-.02em;max-width:14ch}
+.hero h1 em{font-style:italic;color:var(--lime);font-weight:400}
+.hero-sub{max-width:56ch;color:var(--muted);font-size:clamp(1rem,1.6vw,1.2rem);margin:1.8rem 0 2.4rem}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap}
+.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:4rem;padding-top:1.5rem;
+  border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;flex-wrap:wrap;gap:1rem}
+.crescent{position:absolute;top:16%;right:6%;width:clamp(120px,18vw,230px);opacity:.9;animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* marquee */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;
+  padding:1.1rem 0;background:var(--bg2)}
+.marquee-track{display:inline-flex;gap:3rem;animation:scroll 26s linear infinite;font-family:var(--font-d);
+  font-size:1.4rem;font-style:italic;color:var(--ink)}
+.marquee-track span{display:flex;align-items:center;gap:3rem}
+.marquee-track i{font-style:normal;color:var(--lime);font-size:1rem}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* sections */
+section{padding:clamp(4rem,9vw,8rem) clamp(1.2rem,4vw,3rem)}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:2rem;margin-bottom:3.5rem;flex-wrap:wrap}
+.sec-tag{color:var(--lime);font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;display:flex;align-items:center;gap:.7rem}
+.sec-tag::before{content:"";width:26px;height:1px;background:var(--lime)}
+.sec-title{font-family:var(--font-d);font-weight:550;font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;letter-spacing:-.01em;max-width:20ch}
+.sec-title em{font-style:italic;color:var(--lime);font-weight:400}
+
+/* services */
+.svc{border-top:1px solid var(--line)}
+.svc:last-child{border-bottom:1px solid var(--line)}
+.svc-head{display:grid;grid-template-columns:80px 1fr auto;align-items:center;gap:1.5rem;padding:1.8rem .5rem;cursor:pointer}
+.svc-num{font-family:var(--font-d);font-style:italic;color:var(--muted);font-size:1.1rem;transition:color .3s}
+.svc-name{font-family:var(--font-d);font-size:clamp(1.4rem,3.2vw,2.4rem);font-weight:500;letter-spacing:-.01em;transition:transform .35s,color .3s}
+.svc-plus{width:44px;height:44px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;
+  font-size:1.4rem;font-weight:200;transition:all .35s;flex-shrink:0}
+.svc-body{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1)}
+.svc-body p{color:var(--muted);max-width:62ch;padding:0 .5rem 2rem 80px;font-size:1.05rem}
+.svc.open .svc-body{max-height:220px}
+.svc.open .svc-num{color:var(--lime)}
+.svc.open .svc-name{color:var(--lime);transform:translateX(10px)}
+.svc.open .svc-plus{background:var(--lime);color:#101210;border-color:var(--lime);transform:rotate(45deg)}
+@media(max-width:640px){.svc-head{grid-template-columns:44px 1fr auto}.svc-body p{padding-left:0}}
+
+/* approche — section papier */
+.approche{background:var(--paper);color:var(--paper-ink);position:relative;overflow:hidden}
+.approche .sec-tag{color:#5c6b1f}
+.approche .sec-tag::before{background:#5c6b1f}
+.approche blockquote{font-family:var(--font-d);font-size:clamp(2.2rem,6vw,4.6rem);line-height:1.08;font-weight:500;
+  letter-spacing:-.015em;max-width:18ch}
+.approche blockquote em{font-style:italic;color:#5c6b1f}
+.approche-sub{margin-top:2rem;color:#4c5240;max-width:58ch;font-size:1.1rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(20,21,15,.12);margin-top:4rem;border:1px solid rgba(20,21,15,.12)}
+.stat{background:var(--paper);padding:2rem 1.5rem}
+.stat b{display:block;font-family:var(--font-d);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:600}
+.stat span{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:#6a6f5c}
+@media(max-width:760px){.stats{grid-template-columns:1fr 1fr}}
+
+/* à propos */
+.apropos-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:start}
+@media(max-width:900px){.apropos-grid{grid-template-columns:1fr}}
+.apropos-txt p{color:var(--muted);font-size:1.12rem;margin-bottom:1.4rem;max-width:54ch}
+.apropos-txt p strong{color:var(--ink);font-weight:500}
+.facts{border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.fact{display:flex;justify-content:space-between;gap:1rem;padding:1.2rem 1.6rem;border-bottom:1px solid var(--line);font-size:.95rem}
+.fact:last-child{border-bottom:none}
+.fact span:first-child{color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-size:.75rem;padding-top:.2rem}
+.fact span:last-child{text-align:right;font-weight:400}
+
+/* contact */
+.contact{background:var(--bg2);border-top:1px solid var(--line);position:relative;overflow:hidden}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr}}
+.contact h2{font-family:var(--font-d);font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:550;line-height:1.02;letter-spacing:-.015em}
+.contact h2 em{font-style:italic;color:var(--lime);font-weight:400}
+.contact p.lead{color:var(--muted);margin:1.5rem 0 2rem;max-width:44ch;font-size:1.1rem}
+.mail-link{display:inline-flex;align-items:center;gap:.8rem;font-family:var(--font-d);font-size:clamp(1.2rem,2.6vw,1.8rem);
+  font-style:italic;border-bottom:1px solid var(--lime);padding-bottom:.3rem;transition:color .25s}
+.mail-link:hover{color:var(--lime)}
+form{display:flex;flex-direction:column;gap:1.1rem}
+.field label{display:block;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem}
+.field input,.field textarea{background:rgba(245,243,236,.04);border:1px solid var(--line);border-radius:12px;color:var(--ink);
+  padding:.95rem 1.1rem;font-family:var(--font-b);font-size:1rem;width:100%;transition:border-color .25s;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--lime)}
+.field textarea{min-height:130px}
+
+/* footer */
+footer{padding:3rem clamp(1.2rem,4vw,3rem);display:flex;justify-content:space-between;align-items:center;gap:1.5rem;
+  border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;flex-wrap:wrap}
+footer .big{font-family:var(--font-d);font-size:clamp(2rem,6vw,3.4rem);color:var(--ink);font-weight:550;flex-basis:100%;margin-bottom:1rem}
+footer .big em{font-style:italic;color:var(--lime)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .8s cubic-bezier(.2,.6,.2,1),transform .8s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.marquee-track,.blob,.grain,.crescent{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<nav>
+  <a class="logo" href="#top" aria-label="Axe C — accueil">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#161814"/><path d="M44 20c-4-6-11-9-17-7-8 3-12 12-9 20s12 12 20 9c4-2 7-5 8-9" stroke="#c8f04a" stroke-width="7" fill="none" stroke-linecap="round"/></svg>
+    Axe&nbsp;C
+  </a>
+  <div class="nav-links">
+    <a href="#services" data-fr="Services" data-en="Services">Services</a>
+    <a href="#approche" data-fr="Approche" data-en="Approach">Approche</a>
+    <a href="#apropos" data-fr="À propos" data-en="About">À propos</a>
+    <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+  </div>
+  <div class="nav-cta">
+    <div class="lang-toggle" role="group" aria-label="Langue / Language">
+      <button id="btn-fr" class="active">FR</button>
+      <button id="btn-en">EN</button>
+    </div>
+    <a class="btn" href="#contact" data-fr="Évaluation gratuite" data-en="Free evaluation">Évaluation gratuite</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="blob"></div>
+    <div class="axis h"></div><div class="axis v"></div>
+    <svg class="crescent" viewBox="0 0 200 200"><path d="M150 40c-14-20-38-30-60-24-28 8-44 38-34 66s38 44 66 34c14-5 24-16 28-30" stroke="#c8f04a" stroke-width="10" fill="none" stroke-linecap="round" opacity=".8"/><circle cx="100" cy="100" r="86" stroke="rgba(245,243,236,.18)" stroke-width="1" fill="none" stroke-dasharray="4 8"/></svg>
+  </div>
+  <p class="hero-eyebrow rv" data-fr="Studio de design & communications — Niverville, Manitoba" data-en="Design & communications studio — Niverville, Manitoba">Studio de design & communications — Niverville, Manitoba</p>
+  <h1 class="rv" data-fr="Votre travail mérite une <em>image</em> à la hauteur." data-en="Your work deserves a <em>face</em> that matches it.">Votre travail mérite une <em>image</em> à la hauteur.</h1>
+  <p class="hero-sub rv" data-fr="Design graphique, réseaux sociaux, soutien administratif et rédaction bilingue — pour les organismes, entrepreneurs solos et petites équipes qui préfèrent se concentrer sur le travail, pas la paperasse." data-en="Graphic design, social media, admin support, and bilingual copy — for organizations, solo entrepreneurs, and small teams who'd rather focus on the work than the paperwork.">Design graphique, réseaux sociaux, soutien administratif et rédaction bilingue — pour les organismes, entrepreneurs solos et petites équipes qui préfèrent se concentrer sur le travail, pas la paperasse.</p>
+  <div class="hero-ctas rv">
+    <a class="btn" href="#contact" data-fr="Demander une évaluation gratuite" data-en="Request a free evaluation">Demander une évaluation gratuite</a>
+    <a class="btn ghost" href="#services" data-fr="Voir les services" data-en="See services">Voir les services</a>
+  </div>
+  <div class="hero-foot rv">
+    <span data-fr="Bilingue FR / EN" data-en="Bilingual FR / EN">Bilingue FR / EN</span>
+    <span data-fr="À distance, partout au Canada" data-en="Remote, across Canada">À distance, partout au Canada</span>
+    <span data-fr="Depuis 2023" data-en="Since 2023">Depuis 2023</span>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<section id="services">
+  <div class="sec-head rv">
+    <p class="sec-tag" data-fr="Ce que je fais" data-en="What I do">Ce que je fais</p>
+    <h2 class="sec-title" data-fr="Un service, <em>cinq casquettes.</em>" data-en="One hire, <em>five hats.</em>">Un service, <em>cinq casquettes.</em></h2>
+  </div>
+  <div id="svc-list">
+    <div class="svc rv open"><div class="svc-head">
+      <span class="svc-num">01</span>
+      <span class="svc-name" data-fr="Design graphique & contenu visuel" data-en="Graphic design & visual content">Design graphique & contenu visuel</span>
+      <span class="svc-plus">+</span></div>
+      <div class="svc-body"><p data-fr="Logos, cartes d'affaires, menus et visuels pour les réseaux sociaux qui résistent à un second regard." data-en="Logos, business cards, menus, and social visuals that hold up under a second look.">Logos, cartes d'affaires, menus et visuels pour les réseaux sociaux qui résistent à un second regard.</p></div>
+    </div>
+    <div class="svc rv"><div class="svc-head">
+      <span class="svc-num">02</span>
+      <span class="svc-name" data-fr="Gestion des réseaux sociaux" data-en="Social media management">Gestion des réseaux sociaux</span>
+      <span class="svc-plus">+</span></div>
+      <div class="svc-body"><p data-fr="Planification et publication de contenu pour que votre page reste vivante, sans vous occuper l'esprit." data-en="Content planning and posting so your feed stays alive without living in your head.">Planification et publication de contenu pour que votre page reste vivante, sans vous occuper l'esprit.</p></div>
+    </div>
+    <div class="svc rv"><div class="svc-head">
+      <span class="svc-num">03</span>
+      <span class="svc-name" data-fr="Rédaction bilingue & révision" data-en="Bilingual copywriting & proofreading">Rédaction bilingue & révision</span>
+      <span class="svc-plus">+</span></div>
+      <div class="svc-body"><p data-fr="Des mots qui se lisent comme s'ils avaient été écrits deux fois, pas traduits une fois. FR/EN." data-en="Words that read like they were written twice, not translated once. FR/EN.">Des mots qui se lisent comme s'ils avaient été écrits deux fois, pas traduits une fois. FR/EN.</p></div>
+    </div>
+    <div class="svc rv"><div class="svc-head">
+      <span class="svc-num">04</span>
+      <span class="svc-name" data-fr="Assistance virtuelle & soutien admin" data-en="Virtual assistance & admin support">Assistance virtuelle & soutien admin</span>
+      <span class="svc-plus">+</span></div>
+      <div class="svc-body"><p data-fr="La boîte de réception, l'agenda, les suivis — pris en charge, sans effort de votre part." data-en="The inbox, the calendar, the follow-ups — covered, without you lifting a finger.">La boîte de réception, l'agenda, les suivis — pris en charge, sans effort de votre part.</p></div>
+    </div>
+    <div class="svc rv"><div class="svc-head">
+      <span class="svc-num">05</span>
+      <span class="svc-name" data-fr="Saisie de données & recherche" data-en="Data entry & research">Saisie de données & recherche</span>
+      <span class="svc-plus">+</span></div>
+      <div class="svc-body"><p data-fr="Feuilles de calcul propres, recherches bien sourcées, suivi précis — le travail moins glamour, fait comme il faut." data-en="Clean spreadsheets and sourced research, tracked accurately — the unglamorous work, done right.">Feuilles de calcul propres, recherches bien sourcées, suivi précis — le travail moins glamour, fait comme il faut.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="approche" id="approche">
+  <p class="sec-tag rv" data-fr="Notre approche" data-en="Our approach">Notre approche</p>
+  <blockquote class="rv" style="margin-top:2rem" data-fr="<em>Flexible, attentive, polyvalente.</em> On s'adapte à votre réalité — pas l'inverse." data-en="<em>Flexible, attentive, versatile.</em> We adapt to your reality — not the other way around."><em>Flexible, attentive, polyvalente.</em> On s'adapte à votre réalité — pas l'inverse.</blockquote>
+  <p class="approche-sub rv" data-fr="Pas de forfaits rigides ni de jargon d'agence. Vous expliquez ce qui coince, je m'occupe du reste — avec soin, constance, et un vrai souci du détail." data-en="No rigid packages, no agency jargon. You explain what's stuck, I handle the rest — carefully, consistently, and with a real eye for detail.">Pas de forfaits rigides ni de jargon d'agence. Vous expliquez ce qui coince, je m'occupe du reste — avec soin, constance, et un vrai souci du détail.</p>
+  <div class="stats rv">
+    <div class="stat"><b>2023</b><span data-fr="Studio fondé" data-en="Studio founded">Studio fondé</span></div>
+    <div class="stat"><b>FR·EN</b><span data-fr="Vrai bilinguisme" data-en="True bilingualism">Vrai bilinguisme</span></div>
+    <div class="stat"><b>100%</b><span data-fr="À distance" data-en="Remote">À distance</span></div>
+    <div class="stat"><b>5→1</b><span data-fr="Casquettes, un contact" data-en="Hats, one contact">Casquettes, un contact</span></div>
+  </div>
+</section>
+
+<section id="apropos">
+  <div class="sec-head rv">
+    <p class="sec-tag" data-fr="À propos d'Axe C" data-en="About Axe C">À propos d'Axe C</p>
+    <h2 class="sec-title" data-fr="Une seule personne. <em>Une charge de travail en moins</em> pour vous." data-en="One person. <em>One less workload</em> for you.">Une seule personne. <em>Une charge de travail en moins</em> pour vous.</h2>
+  </div>
+  <div class="apropos-grid">
+    <div class="apropos-txt rv">
+      <p data-fr="Que vous soyez un organisme, un entrepreneur solo ou une petite équipe en croissance, le travail de coulisses peut vite devenir écrasant. <strong>Axe C existe pour ça : le prendre en charge, avec soin et constance.</strong>" data-en="Whether you're an organization, a solo entrepreneur, or a growing team, behind-the-scenes work can quickly become overwhelming. <strong>Axe C exists for that: to take it off your plate — carefully, and consistently.</strong>">Que vous soyez un organisme, un entrepreneur solo ou une petite équipe en croissance, <strong>Axe C existe pour ça : le prendre en charge, avec soin et constance.</strong></p>
+      <p data-fr="Née au Québec et établie à Niverville, au Manitoba, je travaille à distance avec des clients partout au pays — en français comme en anglais. Une interlocutrice unique, qui connaît votre dossier par cœur." data-en="Born in Quebec and based in Niverville, Manitoba, I work remotely with clients across the country — in French and in English alike. One point of contact, who knows your file by heart.">Née au Québec et établie à Niverville, au Manitoba, je travaille à distance avec des clients partout au pays — en français comme en anglais. Une interlocutrice unique, qui connaît votre dossier par cœur.</p>
+    </div>
+    <div class="facts rv">
+      <div class="fact"><span data-fr="Fondée" data-en="Founded">Fondée</span><span>2023</span></div>
+      <div class="fact"><span data-fr="Origine" data-en="From">Origine</span><span data-fr="Québec" data-en="Quebec">Québec</span></div>
+      <div class="fact"><span data-fr="Basée à" data-en="Based in">Basée à</span><span>Niverville, MB</span></div>
+      <div class="fact"><span data-fr="Disponibilité" data-en="Availability">Disponibilité</span><span data-fr="À distance, partout au Canada" data-en="Remote, across Canada">À distance, partout au Canada</span></div>
+      <div class="fact"><span data-fr="Langues" data-en="Languages">Langues</span><span>FR / EN</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-grid">
+    <div class="rv">
+      <p class="sec-tag" data-fr="Contact" data-en="Contact">Contact</p>
+      <h2 style="margin-top:1.5rem" data-fr="Une évaluation <em>gratuite ?</em>" data-en="A <em>free</em> evaluation?">Une évaluation <em>gratuite ?</em></h2>
+      <p class="lead" data-fr="Dites-moi ce qui vous ralentit — je vous réponds avec un plan clair, sans engagement." data-en="Tell me what's slowing you down — I'll come back with a clear plan, no strings attached.">Dites-moi ce qui vous ralentit — je vous réponds avec un plan clair, sans engagement.</p>
+      <a class="mail-link" href="mailto:contact@axecstudio.com">contact@axecstudio.com</a>
+    </div>
+    <form class="rv" id="contact-form">
+      <div class="field">
+        <label for="f-name" data-fr="Votre nom" data-en="Your name">Votre nom</label>
+        <input id="f-name" name="name" type="text" required autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="f-email" data-fr="Votre courriel" data-en="Your email">Votre courriel</label>
+        <input id="f-email" name="email" type="email" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="f-msg" data-fr="Ce qui vous ralentit" data-en="What's slowing you down">Ce qui vous ralentit</label>
+        <textarea id="f-msg" name="message" required></textarea>
+      </div>
+      <button class="btn" type="submit" data-fr="Envoyer le message" data-en="Send message">Envoyer le message</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p class="big rv" data-fr="Donnons à votre travail <em>l'image</em> qu'il mérite." data-en="Give your work the <em>face</em> it deserves.">Donnons à votre travail <em>l'image</em> qu'il mérite.</p>
+  <span>© 2026 Axe C Studio — Niverville, MB</span>
+  <span><a href="mailto:contact@axecstudio.com">contact@axecstudio.com</a></span>
+  <span data-fr="Fait avec soin au Manitoba" data-en="Carefully made in Manitoba">Fait avec soin au Manitoba</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var lang = localStorage.getItem("axec-lang") || "fr";
+
+  /* ----- marquee ----- */
+  var words = {fr:["Design graphique","Réseaux sociaux","Rédaction bilingue","Assistance virtuelle","Données & recherche"],
+               en:["Graphic design","Social media","Bilingual copywriting","Virtual assistance","Data & research"]};
+  function buildMarquee(){
+    var seq = words[lang].map(function(w){return "<span>"+w+"<i>●</i></span>"}).join("");
+    document.getElementById("marquee").innerHTML = seq + seq;
+  }
+
+  /* ----- langue ----- */
+  function setLang(l){
+    lang = l;
+    localStorage.setItem("axec-lang", l);
+    document.documentElement.lang = l;
+    document.getElementById("btn-fr").classList.toggle("active", l==="fr");
+    document.getElementById("btn-en").classList.toggle("active", l==="en");
+    document.querySelectorAll("[data-fr]").forEach(function(el){
+      el.innerHTML = el.getAttribute("data-"+l);
+    });
+    document.title = l==="fr" ? "Axe C — Studio de design & communications"
+                              : "Axe C — Design & communications studio";
+    buildMarquee();
+  }
+  document.getElementById("btn-fr").addEventListener("click", function(){ setLang("fr"); });
+  document.getElementById("btn-en").addEventListener("click", function(){ setLang("en"); });
+
+  /* ----- services accordéon ----- */
+  document.querySelectorAll(".svc-head").forEach(function(head){
+    head.addEventListener("click", function(){
+      var item = head.parentElement, wasOpen = item.classList.contains("open");
+      document.querySelectorAll(".svc").forEach(function(s){ s.classList.remove("open"); });
+      if(!wasOpen) item.classList.add("open");
+    });
+  });
+
+  /* ----- reveal on scroll ----- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, {threshold:.12, rootMargin:"0px 0px -40px 0px"});
+  document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+
+  /* ----- curseur ----- */
+  var dot = document.querySelector(".cursor-dot"), ring = document.querySelector(".cursor-ring");
+  var mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
+  addEventListener("mousemove", function(e){
+    mx=e.clientX; my=e.clientY;
+    dot.style.left=mx+"px"; dot.style.top=my+"px";
+  });
+  (function loop(){
+    rx+=(mx-rx)*.16; ry+=(my-ry)*.16;
+    ring.style.left=rx+"px"; ring.style.top=ry+"px";
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll("a,button,.svc-head,.lang-toggle button").forEach(function(el){
+    el.addEventListener("mouseenter", function(){ ring.classList.add("is-hover"); });
+    el.addEventListener("mouseleave", function(){ ring.classList.remove("is-hover"); });
+  });
+
+  /* ----- formulaire -> mailto ----- */
+  document.getElementById("contact-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var n=document.getElementById("f-name").value.trim(),
+        m=document.getElementById("f-email").value.trim(),
+        b=document.getElementById("f-msg").value.trim();
+    var subject = encodeURIComponent((lang==="fr"?"Évaluation gratuite — ":"Free evaluation — ")+n);
+    var body = encodeURIComponent(b+"\n\n— "+n+" ("+m+")");
+    location.href = "mailto:contact@axecstudio.com?subject="+subject+"&body="+body;
+  });
+
+  setLang(lang);
+})();
+</script>
+</body>
+</html>
