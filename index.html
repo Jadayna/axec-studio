@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Axe C — Studio de design & communications</title>
 <meta name="description" content="Axe C — design graphique, réseaux sociaux, rédaction bilingue et soutien administratif pour organismes, entrepreneurs et petites équipes. Basée à Manitoba. FR/EN.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101210'/%3E%3Cpath d='M44 20c-4-6-11-9-17-7-8 3-12 12-9 20s12 12 20 9c4-2 7-5 8-9' stroke='%23faf089' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
   padding:1.1rem clamp(1.2rem,4vw,3rem);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   background:rgba(16,18,16,.55);border-bottom:1px solid var(--line)}
 .logo{display:flex;align-items:center;gap:.6rem;font-family:var(--font-d);font-weight:600;font-size:1.35rem;letter-spacing:.02em}
-.logo svg{width:30px;height:30px}
+.logo img{height:46px;width:auto;display:block}
 .nav-links{display:flex;gap:2rem;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase}
 .nav-links a{position:relative;color:var(--muted);transition:color .25s}
 .nav-links a:hover{color:var(--ink)}
@@ -177,8 +177,7 @@ footer .big em{font-style:italic;color:var(--lime)}
 
 <nav>
   <a class="logo" href="#top" aria-label="Axe C — accueil">
-    <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#161814"/><path d="M44 20c-4-6-11-9-17-7-8 3-12 12-9 20s12 12 20 9c4-2 7-5 8-9" stroke="#faf089" stroke-width="7" fill="none" stroke-linecap="round"/></svg>
-    Axe&nbsp;C
+    <img src="logo.svg" alt="Axe C">
   </a>
   <div class="nav-links">
     <a href="#services" data-fr="Services" data-en="Services">Services</a>
@@ -317,6 +316,7 @@ footer .big em{font-style:italic;color:var(--lime)}
 </section>
 
 <footer>
+  <img src="logo.svg" alt="Axe C" class="rv" style="height:64px;width:auto;margin-bottom:1.5rem;flex-basis:100%">
   <p class="big rv" data-fr="Donnons à votre travail <em>l'image</em> qu'il mérite." data-en="Give your work the <em>face</em> it deserves.">Donnons à votre travail <em>l'image</em> qu'il mérite.</p>
   <span>© 2026 Axe C Studio — Manitoba</span>
   <span><a href="mailto:contact@axecstudio.com">contact@axecstudio.com</a></span>
