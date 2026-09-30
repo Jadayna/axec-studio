@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tous mes liens — Jadayna</title>
+<meta name="description" content="Tous les projets de Jadayna au même endroit : MySolaia, White Murmure, Velvet Love (18+), cours, Axe C Studio.">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101210; --bg2:#161814; --ink:#f5f3ec; --muted:#9a9e8c;
+  --lime:#faf089; --line:rgba(245,243,236,.14);
+  --velvet:#fb7185;
+  --font-d:"Fraunces",serif; --font-b:"Space Grotesk",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-weight:300;
+  line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center}
+::selection{background:var(--lime);color:#101210}
+a{color:inherit;text-decoration:none}
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:2000;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.topbar{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:center;
+  padding:1.1rem 1.2rem}
+.topbar img{height:40px;width:auto}
+.lang-toggle{display:flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;font-size:.75rem;letter-spacing:.1em}
+.lang-toggle button{background:none;border:none;color:var(--muted);padding:.45rem .8rem;cursor:pointer;font-family:var(--font-b);transition:all .25s}
+.lang-toggle button.active{background:var(--lime);color:#101210;font-weight:600}
+main{width:100%;max-width:560px;padding:.5rem 1.2rem 3rem;display:flex;flex-direction:column;gap:.9rem}
+.profile{text-align:center;margin:1rem 0 1.4rem}
+.profile h1{font-family:var(--font-d);font-weight:550;font-size:1.9rem;letter-spacing:-.01em}
+.profile h1 em{font-style:italic;color:var(--lime);font-weight:400}
+.profile p{color:var(--muted);margin-top:.4rem;font-size:.98rem}
+.link-card{display:flex;align-items:center;gap:1rem;background:var(--bg2);border:1px solid var(--line);
+  border-radius:18px;padding:1.05rem 1.25rem;transition:transform .25s,border-color .25s,box-shadow .25s}
+.link-card:hover{transform:translateY(-2px);border-color:var(--lime);box-shadow:0 8px 28px rgba(250,240,137,.12)}
+.link-card .txt{flex:1;min-width:0}
+.link-card .txt b{display:block;font-weight:500;font-size:1.05rem;letter-spacing:.01em}
+.link-card .txt span{color:var(--muted);font-size:.88rem}
+.link-card .arrow{color:var(--lime);font-size:1.3rem;flex-shrink:0}
+/* carte 18+ : impossible à manquer */
+.link-card.adult{border:2px solid var(--velvet);background:linear-gradient(135deg,rgba(251,113,133,.14),var(--bg2) 55%)}
+.link-card.adult:hover{border-color:var(--velvet);box-shadow:0 8px 30px rgba(251,113,133,.28)}
+.badge18{display:inline-flex;align-items:center;justify-content:center;min-width:52px;height:52px;flex-shrink:0;
+  border:2px solid var(--velvet);color:var(--velvet);border-radius:14px;font-weight:700;font-size:1.05rem;letter-spacing:.04em}
+.link-card.adult .txt b{color:var(--velvet)}
+.socials{display:flex;gap:.9rem;justify-content:center;margin-top:1.2rem}
+.socials a{border:1px solid var(--line);border-radius:99px;padding:.6rem 1.3rem;font-size:.88rem;
+  letter-spacing:.06em;color:var(--muted);transition:all .25s}
+.socials a:hover{color:var(--ink);border-color:var(--lime)}
+footer{margin-top:auto;padding:1.6rem;color:var(--muted);font-size:.78rem;letter-spacing:.1em;text-align:center}
+footer a{border-bottom:1px solid var(--lime)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.6,.2,1),transform .7s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="topbar">
+  <a href="https://axecstudio.com/" aria-label="Axe C — accueil"><img src="logo.png" alt="Axe C"></a>
+  <div class="lang-toggle" role="group" aria-label="Langue / Language">
+    <button id="btn-fr" class="active">FR</button>
+    <button id="btn-en">EN</button>
+  </div>
+</div>
+
+<main>
+  <div class="profile rv">
+    <h1 data-fr="@jadaynaa, <em>tous mes projets</em>" data-en="@jadaynaa, <em>all my projects</em>">@jadaynaa, <em>tous mes projets</em></h1>
+    <p data-fr="Un seul lien, tout ce que je construis." data-en="One link, everything I'm building.">Un seul lien, tout ce que je construis.</p>
+  </div>
+
+  <!-- ===== PROJET DU MOMENT : change le href + les textes pour mettre en avant le projet prioritaire ===== -->
+
+  <a class="link-card adult rv" href="https://velvetlove.vercel.app" target="_blank" rel="noopener">
+    <span class="badge18">18+</span>
+    <span class="txt">
+      <b>Velvet Love</b>
+      <span data-fr="Compagnes virtuelles — contenu réservé aux adultes" data-en="Virtual companions — adults-only content">Compagnes virtuelles — contenu réservé aux adultes</span>
+    </span>
+    <span class="arrow">→</span>
+  </a>
+
+  <a class="link-card rv" href="https://www.mysolaia.ca" target="_blank" rel="noopener">
+    <span class="txt">
+      <b>MySolaia</b>
+      <span data-fr="La routine skincare qui se construit toute seule" data-en="The skincare routine that builds itself">La routine skincare qui se construit toute seule</span>
+    </span>
+    <span class="arrow">→</span>
+  </a>
+
+  <a class="link-card rv" href="https://murmure-sooty.vercel.app/" target="_blank" rel="noopener">
+    <span class="txt">
+      <b>White Murmure</b>
+      <span data-fr="Bruits blancs : dormir, focus, calme" data-en="White noise: sleep, focus, calm">Bruits blancs : dormir, focus, calme</span>
+    </span>
+    <span class="arrow">→</span>
+  </a>
+
+  <a class="link-card rv" href="https://cours-communication.vercel.app" target="_blank" rel="noopener">
+    <span class="txt">
+      <b data-fr="Cours « Mieux communiquer »" data-en="“Communicate Better” course">Cours « Mieux communiquer »</b>
+      <span data-fr="Charisme, langage corporel, conversations difficiles — 14,99 $" data-en="Charisma, body language, difficult conversations — $14.99">Charisme, langage corporel, conversations difficiles — 14,99 $</span>
+    </span>
+    <span class="arrow">→</span>
+  </a>
+
+  <a class="link-card rv" href="https://axecstudio.com/#contact" rel="noopener">
+    <span class="txt">
+      <b>Axe C Studio</b>
+      <span data-fr="Design & communications — évaluation gratuite" data-en="Design & communications — free evaluation">Design & communications — évaluation gratuite</span>
+    </span>
+    <span class="arrow">→</span>
+  </a>
+
+  <div class="socials rv">
+    <a href="https://instagram.com/jadaynaa" target="_blank" rel="noopener">Instagram perso</a>
+    <a href="https://instagram.com/axecstudio" target="_blank" rel="noopener">Instagram Axe C</a>
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 <a href="https://axecstudio.com/">Axe C Studio</a> — Manitoba</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var lang = localStorage.getItem("axec-lang") || "fr";
+  function setLang(l){
+    lang = l;
+    localStorage.setItem("axec-lang", l);
+    document.documentElement.lang = l;
+    document.getElementById("btn-fr").classList.toggle("active", l==="fr");
+    document.getElementById("btn-en").classList.toggle("active", l==="en");
+    document.querySelectorAll("[data-fr]").forEach(function(el){
+      el.innerHTML = el.getAttribute("data-"+l);
+    });
+    document.title = l==="fr" ? "Tous mes liens — Jadayna" : "All my links — Jadayna";
+  }
+  document.getElementById("btn-fr").addEventListener("click", function(){ setLang("fr"); });
+  document.getElementById("btn-en").addEventListener("click", function(){ setLang("en"); });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, {threshold:.1});
+  document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+  setLang(lang);
+})();
+</script>
+</body>
+</html>
