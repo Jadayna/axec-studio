@@ -61,6 +61,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .btn.ghost:hover{border-color:var(--lime);box-shadow:none}
 @media(max-width:860px){.nav-links{display:none}}
 
+/* menu mobile */
+.burger{display:none;background:none;border:none;cursor:pointer;padding:.7rem;margin:-.7rem -.7rem -.7rem 0;z-index:1002}
+.burger span{display:block;width:26px;height:2px;background:var(--ink);margin:6px 0;transition:transform .3s,opacity .3s}
+.mobile-menu{position:fixed;inset:0;z-index:999;background:rgba(14,15,13,.97);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.7rem;padding:5rem 1.5rem 2rem;
+  opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.mobile-menu a{font-family:var(--font-d);font-size:clamp(1.8rem,7vw,2.4rem);color:var(--ink);font-weight:500}
+.mobile-menu a:hover{color:var(--lime)}
+.mobile-menu .btn{font-family:var(--font-b);font-size:1rem;font-weight:600;margin-top:1rem}
+body.menu-open{overflow:hidden}
+body.menu-open .mobile-menu{opacity:1;visibility:visible}
+body.menu-open .burger span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+body.menu-open .burger span:nth-child(2){opacity:0}
+body.menu-open .burger span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+@media(max-width:860px){.burger{display:block}}
+@media(max-width:600px){.nav-cta .btn{display:none}}
+
 /* hero */
 .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;position:relative;
   padding:7rem clamp(1.2rem,4vw,3rem) 3rem;overflow:hidden}
@@ -224,7 +241,18 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
     </div>
     <a class="btn" href="#contact" data-fr="Évaluation gratuite" data-en="Free evaluation">Évaluation gratuite</a>
   </div>
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="#services" data-fr="Services" data-en="Services">Services</a>
+  <a href="#approche" data-fr="Approche" data-en="Approach">Approche</a>
+  <a href="#apropos" data-fr="À propos" data-en="About">À propos</a>
+  <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+  <a href="/liens" data-fr="Tous mes projets" data-en="All my projects">Tous mes projets</a>
+  <a class="btn" href="#contact" data-fr="Évaluation gratuite" data-en="Free evaluation">Évaluation gratuite</a>
+</div>
 
 <header class="hero" id="top">
   <div class="hero-bg" aria-hidden="true">
@@ -387,6 +415,19 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
   }
   document.getElementById("btn-fr").addEventListener("click", function(){ setLang("fr"); });
   document.getElementById("btn-en").addEventListener("click", function(){ setLang("en"); });
+
+  /* ----- menu mobile ----- */
+  var burger = document.getElementById("burger"), mMenu = document.getElementById("mobile-menu");
+  function setMenu(open){
+    document.body.classList.toggle("menu-open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+    mMenu.setAttribute("aria-hidden", open ? "false" : "true");
+  }
+  burger.addEventListener("click", function(){ setMenu(!document.body.classList.contains("menu-open")); });
+  mMenu.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ setMenu(false); });
+  });
+  addEventListener("keydown", function(e){ if(e.key==="Escape") setMenu(false); });
 
   /* ----- services accordéon ----- */
   document.querySelectorAll(".svc-head").forEach(function(head){
