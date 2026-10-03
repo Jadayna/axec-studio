@@ -1,1 +1,19 @@
-{"redirects":[{"destination":"/liens","permanent":true,"source":"/links"}]}
+{
+  "redirects": [
+    {
+      "destination": "/liens",
+      "permanent": true,
+      "source": "/links"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/communication",
+      "destination": "https://cours-communication.vercel.app/"
+    },
+    {
+      "source": "/communication/:path*",
+      "destination": "https://cours-communication.vercel.app/:path*"
+    }
+  ]
+}
