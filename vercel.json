@@ -12,6 +12,10 @@
       "destination": "https://cours-communication.vercel.app/"
     },
     {
+      "source": "/communication/",
+      "destination": "https://cours-communication.vercel.app/"
+    },
+    {
       "source": "/communication/:path*",
       "destination": "https://cours-communication.vercel.app/:path*"
     }
