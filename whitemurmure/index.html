@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>White Murmure — Compose ton calme</title>
+<meta name="description" content="White Murmure : le mixeur de sons d'ambiance. 46 sons haute qualité, minuteur avec fondu, 100 % hors-ligne. Essaie la démo, compose ton calme.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2310151c'/%3E%3Cpath d='M10 40q6-8 12 0t12 0 12 0' stroke='%237cc3d3' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M10 28q6-8 12 0t12 0 12 0' stroke='%237cc3d3' stroke-width='5' fill='none' stroke-linecap='round' opacity='.5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#10151c; --surface:#1a212b; --surface2:#242e3d;
+  --text:#edeae3; --muted:#99a1b0;
+  --accent:#7cc3d3; --accent-deep:#2f7d8c; --accent-soft:#1c3038;
+  --radius:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:"Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+::selection{background:var(--accent);color:#0e1418}
+a{color:inherit}
+/* grain */
+body::after{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:60; opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+/* ---------- nav ---------- */
+nav{
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 28px; transition:background .3s,border-color .3s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{background:rgba(16,21,28,.82); backdrop-filter:blur(14px); border-color:rgba(124,195,211,.12)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:900;font-size:19px;letter-spacing:.01em}
+.brand svg{width:32px;height:32px}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{text-decoration:none;color:var(--muted);font-weight:700;font-size:15px;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-right{display:flex;gap:12px;align-items:center}
+.lang-toggle{
+  display:flex;background:var(--surface);border:1px solid rgba(124,195,211,.18);
+  border-radius:999px;padding:3px;cursor:pointer;
+}
+.lang-toggle button{
+  border:0;background:transparent;color:var(--muted);font:inherit;font-weight:800;font-size:13px;
+  padding:6px 12px;border-radius:999px;cursor:pointer;transition:all .2s;
+}
+.lang-toggle button.on{background:var(--accent);color:#0e1418}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:800;
+  background:var(--accent);color:#0e1418;border:0;border-radius:999px;
+  padding:12px 24px;font-size:15px;cursor:pointer;transition:transform .15s,box-shadow .2s;font-family:inherit;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,195,211,.35)}
+.btn.ghost{background:transparent;color:var(--text);border:1.5px solid rgba(124,195,211,.4)}
+.btn.ghost:hover{box-shadow:none;border-color:var(--accent)}
+.btn.small{padding:9px 18px;font-size:14px}
+/* ---------- hero ---------- */
+.hero{
+  position:relative;min-height:100svh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;text-align:center;
+  padding:130px 24px 70px;overflow:hidden;
+}
+#waves{position:absolute;inset:0;width:100%;height:100%;opacity:.55;pointer-events:none}
+.hero-inner{position:relative;z-index:2;max-width:900px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:13px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:22px;
+  background:rgba(124,195,211,.08);border:1px solid rgba(124,195,211,.22);
+  padding:8px 18px;border-radius:999px;
+}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2.2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+h1{
+  font-size:clamp(46px,8vw,104px);font-weight:900;line-height:1.02;letter-spacing:-.02em;margin-bottom:20px;
+}
+h1 .hl{color:var(--accent);position:relative;display:inline-block}
+h1 .hl svg{position:absolute;left:0;right:0;bottom:-.12em;width:100%;height:.28em}
+.hero-sub{color:var(--muted);font-size:clamp(16px,2.4vw,20px);max-width:620px;margin:0 auto 34px;line-height:1.6}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:56px}
+/* ---------- démo mixeur ---------- */
+.demo{
+  position:relative;z-index:2;width:100%;max-width:860px;
+  background:rgba(26,33,43,.72);backdrop-filter:blur(18px);
+  border:1px solid rgba(124,195,211,.16);border-radius:28px;
+  padding:30px 30px 26px;box-shadow:0 24px 80px rgba(0,0,0,.45);
+}
+.demo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.demo-title{font-weight:900;font-size:18px;display:flex;align-items:center;gap:10px}
+.demo-title .live{font-size:11px;font-weight:800;letter-spacing:.1em;color:#0e1418;background:var(--accent);padding:4px 10px;border-radius:999px}
+.demo-hint{color:var(--muted);font-size:13.5px}
+.demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.scard{
+  background:var(--surface2);border:1px solid rgba(124,195,211,.1);border-radius:18px;
+  padding:20px 16px 18px;text-align:center;transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.scard:hover{transform:translateY(-3px)}
+.scard.playing{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 10px 30px rgba(124,195,211,.15)}
+.scard .icon{
+  width:52px;height:52px;margin:0 auto 12px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+  background:var(--accent-soft);color:var(--accent);transition:all .25s;
+}
+.scard.playing .icon{background:var(--accent);color:#0e1418}
+.scard .icon svg{width:28px;height:28px}
+.scard h3{font-size:16px;font-weight:800;margin-bottom:14px}
+.scard .row{display:flex;align-items:center;gap:10px}
+.playbtn{
+  flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;
+  background:var(--accent);color:#0e1418;display:flex;align-items:center;justify-content:center;
+  transition:transform .15s;font-family:inherit;
+}
+.playbtn:hover{transform:scale(1.08)}
+.playbtn svg{width:18px;height:18px}
+.playbtn.off{background:var(--surface);color:var(--muted);border:1px solid rgba(124,195,211,.25)}
+input[type=range]{flex:1;appearance:none;-webkit-appearance:none;height:6px;border-radius:99px;background:rgba(124,195,211,.2);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--accent);
+  border:3px solid #0e1418;box-shadow:0 0 0 1.5px var(--accent);cursor:grab;
+}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid #0e1418;cursor:grab}
+.demo-foot{margin-top:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.eq{display:flex;align-items:flex-end;gap:4px;height:26px}
+.eq span{width:5px;border-radius:3px;background:var(--accent);opacity:.25;height:30%;transition:height .3s}
+.demo.playing .eq span{opacity:1;animation:eq 1.1s ease-in-out infinite}
+.demo.playing .eq span:nth-child(2){animation-delay:.15s}.demo.playing .eq span:nth-child(3){animation-delay:.3s}
+.demo.playing .eq span:nth-child(4){animation-delay:.45s}.demo.playing .eq span:nth-child(5){animation-delay:.6s}
+@keyframes eq{0%,100%{height:25%}50%{height:100%}}
+.demo-cta{color:var(--muted);font-size:14px}
+.demo-cta a{color:var(--accent);font-weight:800}
+/* ---------- marquee ---------- */
+.marquee{overflow:hidden;border-top:1px solid rgba(124,195,211,.12);border-bottom:1px solid rgba(124,195,211,.12);padding:18px 0;background:rgba(26,33,43,.5)}
+.marquee-track{display:flex;gap:48px;width:max-content;animation:scroll 26s linear infinite;font-weight:800;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.marquee-track b{color:var(--accent);font-weight:800}
+@keyframes scroll{to{transform:translateX(-50%)}}
+/* ---------- sections ---------- */
+section{padding:110px 24px;max-width:1180px;margin:0 auto}
+.kicker{color:var(--accent);font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px}
+h2{font-size:clamp(32px,5vw,54px);font-weight:900;letter-spacing:-.02em;line-height:1.08;margin-bottom:18px}
+.lead{color:var(--muted);font-size:18px;line-height:1.65;max-width:640px}
+.center{text-align:center}.center .lead{margin:0 auto}
+/* features */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px}
+.feat{
+  background:var(--surface);border:1px solid rgba(124,195,211,.1);border-radius:var(--radius);
+  padding:30px 26px;transition:transform .2s,border-color .2s;
+}
+.feat:hover{transform:translateY(-4px);border-color:rgba(124,195,211,.35)}
+.feat .icon{width:50px;height:50px;border-radius:15px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.feat .icon svg{width:26px;height:26px}
+.feat h3{font-size:18px;font-weight:800;margin-bottom:10px}
+.feat p{color:var(--muted);font-size:15px;line-height:1.6}
+/* packs */
+.pack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px}
+.pack{
+  position:relative;background:var(--surface);border:1px solid rgba(124,195,211,.1);border-radius:var(--radius);
+  padding:30px 26px;transition:transform .2s,border-color .2s;overflow:hidden;
+}
+.pack:hover{transform:translateY(-4px);border-color:rgba(124,195,211,.4)}
+.pack .art{height:120px;border-radius:14px;margin-bottom:20px;position:relative;overflow:hidden}
+.pack .art svg{position:absolute;inset:0;width:100%;height:100%}
+.pack h3{font-size:20px;font-weight:900;margin-bottom:6px}
+.pack .sounds{color:var(--muted);font-size:13.5px;line-height:1.7;margin-bottom:18px;min-height:66px}
+.pack .buy{display:flex;align-items:center;justify-content:space-between}
+.pack .price{font-size:24px;font-weight:900;color:var(--accent)}
+.pack .tag{position:absolute;top:16px;right:16px;font-size:11px;font-weight:800;letter-spacing:.08em;background:var(--accent-soft);color:var(--accent);padding:5px 12px;border-radius:999px;border:1px solid rgba(124,195,211,.3)}
+/* prix */
+.pricing{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:54px;align-items:stretch;max-width:900px;margin-left:auto;margin-right:auto}
+.price-card{
+  background:var(--surface);border:1px solid rgba(124,195,211,.12);border-radius:28px;padding:44px 38px;
+  display:flex;flex-direction:column;position:relative;
+}
+.price-card.hero{background:linear-gradient(160deg,#1c3038,#14232b);border:1.5px solid var(--accent);box-shadow:0 20px 70px rgba(124,195,211,.14)}
+.price-card .badge{align-self:flex-start;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:var(--accent);color:#0e1418;padding:6px 14px;border-radius:999px;margin-bottom:20px}
+.price-card h3{font-size:24px;font-weight:900;margin-bottom:8px}
+.price-card .amount{font-size:56px;font-weight:900;margin:10px 0 4px}
+.price-card .amount small{font-size:16px;color:var(--muted);font-weight:700}
+.price-card ul{list-style:none;margin:22px 0 30px;display:flex;flex-direction:column;gap:12px}
+.price-card li{display:flex;gap:10px;align-items:flex-start;color:var(--muted);font-size:15.5px;line-height:1.5}
+.price-card li svg{flex:0 0 auto;width:20px;height:20px;color:var(--accent);margin-top:2px}
+.price-card .btn{margin-top:auto;justify-content:center}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px;counter-reset:step}
+.step{background:var(--surface);border:1px solid rgba(124,195,211,.1);border-radius:var(--radius);padding:32px 28px;position:relative}
+.step::before{
+  counter-increment:step;content:counter(step,decimal-leading-zero);
+  font-size:15px;font-weight:900;color:var(--accent);letter-spacing:.1em;
+  display:block;margin-bottom:16px;
+}
+.step h3{font-size:19px;font-weight:800;margin-bottom:10px}
+.step p{color:var(--muted);font-size:15px;line-height:1.65}
+/* faq */
+.faq{max-width:760px;margin:54px auto 0}
+.faq-item{background:var(--surface);border:1px solid rgba(124,195,211,.1);border-radius:18px;margin-bottom:12px;overflow:hidden}
+.faq-q{
+  width:100%;background:none;border:0;color:var(--text);font:inherit;font-weight:800;font-size:17px;
+  padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  cursor:pointer;text-align:left;
+}
+.faq-q .plus{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;transition:transform .25s;font-size:18px;font-weight:900}
+.faq-item.open .faq-q .plus{transform:rotate(45deg);background:var(--accent);color:#0e1418}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-a p{padding:0 26px 24px;color:var(--muted);font-size:15.5px;line-height:1.7}
+/* final cta */
+.final{
+  text-align:center;padding:130px 24px;position:relative;overflow:hidden;
+  border-top:1px solid rgba(124,195,211,.12);
+}
+.final h2{font-size:clamp(38px,6vw,72px);margin-bottom:20px}
+.final .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35;pointer-events:none}
+footer{border-top:1px solid rgba(124,195,211,.12);padding:44px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;max-width:1180px;margin:0 auto;color:var(--muted);font-size:14px}
+footer .flinks{display:flex;gap:22px}
+footer a{text-decoration:none;font-weight:700}
+footer a:hover{color:var(--text)}
+/* reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+/* responsive */
+@media(max-width:900px){
+  .feat-grid,.pack-grid,.steps{grid-template-columns:1fr 1fr}
+  .pricing{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+@media(max-width:600px){
+  .feat-grid,.pack-grid,.steps,.demo-grid{grid-template-columns:1fr}
+  nav{padding:14px 18px}
+  section{padding:80px 20px}
+  .demo{padding:22px 18px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a class="brand" href="#top" aria-label="White Murmure">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#1a212b"/><path d="M10 40q6-8 12 0t12 0 12 0" stroke="#7cc3d3" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M10 28q6-8 12 0t12 0 12 0" stroke="#7cc3d3" stroke-width="5" fill="none" stroke-linecap="round" opacity=".5"/></svg>
+    <span>White&nbsp;Murmure</span>
+  </a>
+  <div class="nav-links">
+    <a href="#experience" data-fr="L'expérience" data-en="The experience">L'expérience</a>
+    <a href="#packs" data-fr="Les packs" data-en="Sound packs">Les packs</a>
+    <a href="#prix" data-fr="Prix" data-en="Pricing">Prix</a>
+    <a href="#faq" data-fr="FAQ" data-en="FAQ">FAQ</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle" role="group" aria-label="Langue / Language">
+      <button id="btnFR" class="on" type="button">FR</button>
+      <button id="btnEN" type="button">EN</button>
+    </div>
+    <a class="btn small" href="https://murmure-sooty.vercel.app" data-fr="Ouvrir l'app" data-en="Open the app">Ouvrir l'app</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="waves" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <span class="eyebrow"><span class="dot"></span><span data-fr="Le mixeur de sons d'ambiance" data-en="The ambient sound mixer">Le mixeur de sons d'ambiance</span></span>
+    <h1><span data-fr="Compose ton" data-en="Compose your">Compose ton</span> <span class="hl"><span data-fr="calme." data-en="calm.">calme.</span><svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M2 14 Q 50 4 100 12 T 198 8" stroke="#7cc3d3" stroke-width="5" fill="none" stroke-linecap="round" opacity=".6"/></svg></span></h1>
+    <p class="hero-sub" data-fr="46 sons haute qualité à mixer à l'infini : pluie, orage, forêt, feu de camp… avec minuteur, sauvegarde de tes mix et zéro compte requis." data-en="46 high-quality sounds to mix endlessly: rain, thunder, forest, campfire… with a sleep timer, saved mixes, and no account required.">46 sons haute qualité à mixer à l'infini : pluie, orage, forêt, feu de camp… avec minuteur, sauvegarde de tes mix et zéro compte requis.</p>
+    <div class="hero-ctas">
+      <a class="btn" href="https://murmure-sooty.vercel.app" data-fr="Ouvrir l'app — c'est gratuit" data-en="Open the app — it's free">Ouvrir l'app — c'est gratuit</a>
+      <a class="btn ghost" href="#packs" data-fr="Découvrir les packs" data-en="Explore the packs">Découvrir les packs</a>
+    </div>
+  </div>
+
+  <div class="demo" id="demo">
+    <div class="demo-head">
+      <div class="demo-title"><span class="live">LIVE</span><span data-fr="Essaie tout de suite" data-en="Try it right now">Essaie tout de suite</span></div>
+      <div class="demo-hint" data-fr="3 sons gratuits, mixés en direct — comme dans l'app." data-en="3 free sounds, mixed live — just like in the app.">3 sons gratuits, mixés en direct — comme dans l'app.</div>
+    </div>
+    <div class="demo-grid">
+      <div class="scard" data-sound="pluie-douce" data-file="sounds/pluie-douce.mp3">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 15a5 5 0 1 1 1-9.9A6 6 0 0 1 19.5 8 4.5 4.5 0 0 1 18 17H8"/><path d="M8 18v2.5M12 18v3.5M16 18v2.5"/></svg></div>
+        <h3 data-fr="Pluie douce" data-en="Gentle rain">Pluie douce</h3>
+        <div class="row">
+          <button class="playbtn off" type="button" aria-label="Lecture / Pause"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+          <input type="range" min="0" max="100" value="70" aria-label="Volume">
+        </div>
+      </div>
+      <div class="scard" data-sound="vagues" data-file="sounds/vagues.mp3">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 9q3-3 6 0t6 0 6 0"/><path d="M2 14q3-3 6 0t6 0 6 0"/><path d="M2 19q3-3 6 0t6 0 6 0"/></svg></div>
+        <h3 data-fr="Vagues" data-en="Ocean waves">Vagues</h3>
+        <div class="row">
+          <button class="playbtn off" type="button" aria-label="Lecture / Pause"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+          <input type="range" min="0" max="100" value="70" aria-label="Volume">
+        </div>
+      </div>
+      <div class="scard" data-sound="feu-foyer" data-file="sounds/feu-foyer.mp3">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4.4 0 7.5-3 7.5-7.2 0-3.1-2-5.3-3.6-7C14.3 6 13 4.5 13 2c-3 2.5-4.5 4.8-5.4 7.2-.6-1-.9-2.2-1-3.7C4.9 7 4.5 9.4 4.5 11.5 4.5 18 7.6 22 12 22z"/></svg></div>
+        <h3 data-fr="Feu de foyer" data-en="Fireplace">Feu de foyer</h3>
+        <div class="row">
+          <button class="playbtn off" type="button" aria-label="Lecture / Pause"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+          <input type="range" min="0" max="100" value="70" aria-label="Volume">
+        </div>
+      </div>
+    </div>
+    <div class="demo-foot">
+      <div class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="demo-cta"><span data-fr="Envie des 43 autres ?" data-en="Want the other 43?">Envie des 43 autres ?</span> <a href="https://murmure-sooty.vercel.app" data-fr="Ouvre l'app →" data-en="Open the app →">Ouvre l'app →</a></div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+<section id="experience">
+  <div class="center rv">
+    <div class="kicker" data-fr="L'expérience" data-en="The experience">L'expérience</div>
+    <h2 data-fr="Ton ambiance, sur mesure." data-en="Your ambience, tailor-made.">Ton ambiance, sur mesure.</h2>
+    <p class="lead" data-fr="Pas de playlist figée : tu règles chaque son au doigt, tu sauvegardes tes mix préférés et tu t'endors avec un fondu en douceur." data-en="No fixed playlists: fine-tune every sound, save your favorite mixes, and drift off with a gentle fade-out.">Pas de playlist figée : tu règles chaque son au doigt, tu sauvegardes tes mix préférés et tu t'endors avec un fondu en douceur.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat rv">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 18V6l10-2v11"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="15" r="2.5"/></svg></div>
+      <h3 data-fr="46 sons haute qualité" data-en="46 high-quality sounds">46 sons haute qualité</h3>
+      <p data-fr="Enregistrements réels, boucles parfaites sans coupure, volumes normalisés. Chaque jonction est inaudible." data-en="Real recordings, seamless loops, normalized volumes. Every loop point is inaudible.">Enregistrements réels, boucles parfaites sans coupure, volumes normalisés. Chaque jonction est inaudible.</p>
+    </div>
+    <div class="feat rv">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></div>
+      <h3 data-fr="Minuteur avec fondu" data-en="Sleep timer with fade">Minuteur avec fondu</h3>
+      <p data-fr="Programme l'arrêt : le son s'estompe en douceur au lieu de couper net. Idéal pour s'endormir." data-en="Schedule the stop: sound fades out gently instead of cutting off. Perfect for falling asleep.">Programme l'arrêt : le son s'estompe en douceur au lieu de couper net. Idéal pour s'endormir.</p>
+    </div>
+    <div class="feat rv">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg></div>
+      <h3 data-fr="Tes mix, sauvegardés" data-en="Your mixes, saved">Tes mix, sauvegardés</h3>
+      <p data-fr="« Pluie + tonnerre lointain à 6h du matin » : nomme tes créations, retrouve-les en un tap, partage-les par lien." data-en="“Rain + distant thunder at 6am”: name your creations, recall them in one tap, share them with a link.">« Pluie + tonnerre lointain à 6h du matin » : nomme tes créations, retrouve-les en un tap, partage-les par lien.</p>
+    </div>
+    <div class="feat rv">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1.2" fill="currentColor"/></svg></div>
+      <h3 data-fr="100 % hors-ligne" data-en="Fully offline">100 % hors-ligne</h3>
+      <p data-fr="Installe l'app sur ton téléphone : les sons gratuits sont en cache et jouent même en mode avion." data-en="Install the app on your phone: free sounds are cached and play even in airplane mode.">Installe l'app sur ton téléphone : les sons gratuits sont en cache et jouent même en mode avion.</p>
+    </div>
+    <div class="feat rv">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3 data-fr="Sans compte" data-en="No account needed">Sans compte</h3>
+      <p data-fr="L'app s'ouvre et joue. Un compte n'est créé que si tu achètes un pack — automatiquement, sans mot de passe." data-en="The app just opens and plays. An account is only created if you buy a pack — automatically, no password.">L'app s'ouvre et joue. Un compte n'est créé que si tu achètes un pack — automatiquement, sans mot de passe.</p>
+    </div>
+    <div class="feat rv">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h9M8.5 3v2c0 3.5-2.5 7-5.5 8.5M6 9c1 2.5 3.5 5 7 5.5"/><path d="M13 21l4.5-10L22 21M14.8 17h5.4"/></svg></div>
+      <h3 data-fr="Bilingue FR/EN" data-en="Bilingual FR/EN">Bilingue FR/EN</h3>
+      <p data-fr="Interface complète en français et en anglais, d'un seul tap. Pensée ici, au Manitoba." data-en="Full interface in French and English, one tap away. Made here, in Manitoba.">Interface complète en français et en anglais, d'un seul tap. Pensée ici, au Manitoba.</p>
+    </div>
+  </div>
+</section>
+
+<section id="packs" style="padding-top:40px">
+  <div class="center rv">
+    <div class="kicker" data-fr="Les packs" data-en="Sound packs">Les packs</div>
+    <h2 data-fr="Six univers à explorer." data-en="Six worlds to explore.">Six univers à explorer.</h2>
+    <p class="lead" data-fr="10 sons gratuits pour commencer. Chaque pack ajoute 6 sons et enlève la pub pour toujours — un seul geste, deux bénéfices." data-en="10 free sounds to start. Each pack adds 6 sounds and removes ads forever — one gesture, two benefits.">10 sons gratuits pour commencer. Chaque pack ajoute 6 sons et enlève la pub pour toujours — un seul geste, deux bénéfices.</p>
+  </div>
+  <div class="pack-grid" id="packGrid"></div>
+</section>
+
+<section id="prix" style="padding-top:40px">
+  <div class="center rv">
+    <div class="kicker" data-fr="Prix" data-en="Pricing">Prix</div>
+    <h2 data-fr="Simple, sans abonnement." data-en="Simple, no subscription.">Simple, sans abonnement.</h2>
+    <p class="lead" data-fr="Tu paies une fois, c'est à toi pour toujours. Chaque achat enlève la publicité définitivement." data-en="Pay once, it's yours forever. Every purchase removes ads for good.">Tu paies une fois, c'est à toi pour toujours. Chaque achat enlève la publicité définitivement.</p>
+  </div>
+  <div class="pricing">
+    <div class="price-card rv">
+      <h3 data-fr="À la carte" data-en="À la carte">À la carte</h3>
+      <div class="amount">2,99&nbsp;$</div>
+      <p style="color:var(--muted);font-size:15px" data-fr="par pack de 6 sons" data-en="per 6-sound pack">par pack de 6 sons</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg><span data-fr="6 sons haute qualité" data-en="6 high-quality sounds">6 sons haute qualité</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg><span data-fr="Publicité enlevée pour toujours" data-en="Ads removed forever">Publicité enlevée pour toujours</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg><span data-fr="Paiement unique, à toi pour la vie" data-en="One-time payment, yours for life">Paiement unique, à toi pour la vie</span></li>
+      </ul>
+      <a class="btn ghost" href="https://murmure-sooty.vercel.app" data-fr="Choisir dans l'app" data-en="Choose in the app">Choisir dans l'app</a>
+    </div>
+    <div class="price-card hero rv">
+      <span class="badge" data-fr="Le meilleur choix" data-en="Best value">Le meilleur choix</span>
+      <h3 data-fr="Collection complète à vie" data-en="Lifetime collection">Collection complète à vie</h3>
+      <div class="amount">12,99&nbsp;$ <small data-fr="une seule fois" data-en="one time">une seule fois</small></div>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg><span data-fr="Les 6 packs : 36 sons d'un coup" data-en="All 6 packs: 36 sounds at once">Les 6 packs : 36 sons d'un coup</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg><span data-fr="Tous les futurs packs inclus" data-en="All future packs included">Tous les futurs packs inclus</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg><span data-fr="Zéro pub, pour toujours" data-en="Zero ads, forever">Zéro pub, pour toujours</span></li>
+      </ul>
+      <a class="btn" href="https://murmure-sooty.vercel.app" data-fr="Tout débloquer" data-en="Unlock everything">Tout débloquer</a>
+    </div>
+  </div>
+</section>
+
+<section id="comment" style="padding-top:40px">
+  <div class="center rv">
+    <div class="kicker" data-fr="Comment ça marche" data-en="How it works">Comment ça marche</div>
+    <h2 data-fr="Trois gestes, zéro friction." data-en="Three steps, zero friction.">Trois gestes, zéro friction.</h2>
+  </div>
+  <div class="steps">
+    <div class="step rv">
+      <h3 data-fr="Ouvre l'app" data-en="Open the app">Ouvre l'app</h3>
+      <p data-fr="Pas d'inscription, pas de formulaire. L'app s'ouvre et les 10 sons gratuits sont prêts à jouer." data-en="No sign-up, no forms. The app opens and the 10 free sounds are ready to play.">Pas d'inscription, pas de formulaire. L'app s'ouvre et les 10 sons gratuits sont prêts à jouer.</p>
+    </div>
+    <div class="step rv">
+      <h3 data-fr="Mixe à ton goût" data-en="Mix to your taste">Mixe à ton goût</h3>
+      <p data-fr="Glisse les curseurs : pluie + feu de foyer + hibou lointain… Sauvegarde tes mix et partage-les par lien." data-en="Slide the faders: rain + fireplace + distant owl… Save your mixes and share them with a link.">Glisse les curseurs : pluie + feu de foyer + hibou lointain… Sauvegarde tes mix et partage-les par lien.</p>
+    </div>
+    <div class="step rv">
+      <h3 data-fr="Débloque (si tu veux)" data-en="Unlock (if you want)">Débloque (si tu veux)</h3>
+      <p data-fr="Un pack te plaît ? Un paiement, et ton compte est créé automatiquement — sans mot de passe, par lien magique." data-en="Love a pack? One payment, and your account is created automatically — no password, via magic link.">Un pack te plaît ? Un paiement, et ton compte est créé automatiquement — sans mot de passe, par lien magique.</p>
+    </div>
+  </div>
+</section>
+<section id="faq" style="padding-top:40px">
+  <div class="center rv">
+    <div class="kicker">FAQ</div>
+    <h2 data-fr="Questions fréquentes." data-en="Frequently asked.">Questions fréquentes.</h2>
+  </div>
+  <div class="faq">
+    <div class="faq-item rv">
+      <button class="faq-q" type="button"><span data-fr="Faut-il un compte pour utiliser l'app ?" data-en="Do I need an account to use the app?">Faut-il un compte pour utiliser l'app ?</span><span class="plus">+</span></button>
+      <div class="faq-a"><p data-fr="Non. Les 10 sons gratuits, le minuteur et la sauvegarde de mix fonctionnent sans aucun compte. Un compte n'est créé que si tu achètes un pack ou la collection à vie — automatiquement, avec ton courriel de paiement, et tu te connectes ensuite par lien magique (aucun mot de passe)." data-en="No. The 10 free sounds, the timer and mix saving all work with no account. An account is only created if you buy a pack or the lifetime collection — automatically, with your payment email — and you sign in later with a magic link (no password).">Non. Les 10 sons gratuits, le minuteur et la sauvegarde de mix fonctionnent sans aucun compte. Un compte n'est créé que si tu achètes un pack ou la collection à vie — automatiquement, avec ton courriel de paiement, et tu te connectes ensuite par lien magique (aucun mot de passe).</p></div>
+    </div>
+    <div class="faq-item rv">
+      <button class="faq-q" type="button"><span data-fr="Y a-t-il de la publicité ?" data-en="Are there ads?">Y a-t-il de la publicité ?</span><span class="plus">+</span></button>
+      <div class="faq-a"><p data-fr="Une publicité discrète sur la version gratuite, oui — c'est ce qui la garde gratuite. Chaque achat (n'importe quel pack, ou la collection à vie) l'enlève définitivement, sur tous tes appareils." data-en="A discreet ad on the free version, yes — that's what keeps it free. Any purchase (any pack, or the lifetime collection) removes it permanently, on all your devices.">Une publicité discrète sur la version gratuite, oui — c'est ce qui la garde gratuite. Chaque achat (n'importe quel pack, ou la collection à vie) l'enlève définitivement, sur tous tes appareils.</p></div>
+    </div>
+    <div class="faq-item rv">
+      <button class="faq-q" type="button"><span data-fr="Est-ce que ça marche hors-ligne ?" data-en="Does it work offline?">Est-ce que ça marche hors-ligne ?</span><span class="plus">+</span></button>
+      <div class="faq-a"><p data-fr="Oui. Installe l'app sur ton téléphone (c'est une PWA) : les sons gratuits sont mis en cache et jouent même en mode avion. Les packs achetés se téléchargent aussi pour l'écoute hors-ligne." data-en="Yes. Install the app on your phone (it's a PWA): free sounds are cached and play even in airplane mode. Purchased packs download too for offline listening.">Oui. Installe l'app sur ton téléphone (c'est une PWA) : les sons gratuits sont mis en cache et jouent même en mode avion. Les packs achetés se téléchargent aussi pour l'écoute hors-ligne.</p></div>
+    </div>
+    <div class="faq-item rv">
+      <button class="faq-q" type="button"><span data-fr="Et si je change de téléphone ?" data-en="What if I switch phones?">Et si je change de téléphone ?</span><span class="plus">+</span></button>
+      <div class="faq-a"><p data-fr="Tes achats sont liés à ton compte, pas à ton appareil. Sur ton nouveau téléphone, entre ton courriel dans l'app, clique le lien magique reçu, et tout est là." data-en="Your purchases are tied to your account, not your device. On your new phone, enter your email in the app, click the magic link you receive, and everything is there.">Tes achats sont liés à ton compte, pas à ton appareil. Sur ton nouveau téléphone, entre ton courriel dans l'app, clique le lien magique reçu, et tout est là.</p></div>
+    </div>
+    <div class="faq-item rv">
+      <button class="faq-q" type="button"><span data-fr="Puis-je être remboursé ?" data-en="Can I get a refund?">Puis-je être remboursé ?</span><span class="plus">+</span></button>
+      <div class="faq-a"><p data-fr="Écris-nous à contact@axecstudio.com dans les 14 jours suivant l'achat : on rembourse sans poser de questions." data-en="Email us at contact@axecstudio.com within 14 days of purchase: we refund, no questions asked.">Écris-nous à contact@axecstudio.com dans les 14 jours suivant l'achat : on rembourse sans poser de questions.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="final">
+  <div class="orb" style="width:420px;height:420px;background:#2f7d8c;top:-120px;left:-120px"></div>
+  <div class="orb" style="width:360px;height:360px;background:#7cc3d3;bottom:-140px;right:-100px;opacity:.22"></div>
+  <div class="rv" style="position:relative">
+    <div class="kicker" data-fr="À toi" data-en="Your turn">À toi</div>
+    <h2 data-fr="Ton calme t'attend." data-en="Your calm awaits.">Ton calme t'attend.</h2>
+    <p class="lead" style="margin:0 auto 34px;text-align:center" data-fr="Gratuit pour commencer. 46 sons quand tu es prêt." data-en="Free to start. 46 sounds when you're ready.">Gratuit pour commencer. 46 sons quand tu es prêt.</p>
+    <a class="btn" style="font-size:17px;padding:16px 36px" href="https://murmure-sooty.vercel.app" data-fr="Ouvrir White Murmure" data-en="Open White Murmure">Ouvrir White Murmure</a>
+  </div>
+</div>
+
+<footer>
+  <div class="brand" style="font-size:16px">
+    <svg viewBox="0 0 64 64" aria-hidden="true" style="width:26px;height:26px"><rect width="64" height="64" rx="16" fill="#1a212b"/><path d="M10 40q6-8 12 0t12 0 12 0" stroke="#7cc3d3" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M10 28q6-8 12 0t12 0 12 0" stroke="#7cc3d3" stroke-width="5" fill="none" stroke-linecap="round" opacity=".5"/></svg>
+    <span>White&nbsp;Murmure</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:4px">
+    <span data-fr="Une création Axe C Studio — Manitoba, Canada." data-en="A creation of Axe C Studio — Manitoba, Canada.">Une création Axe C Studio — Manitoba, Canada.</span>
+    <span>© 2026 · <a href="mailto:contact@axecstudio.com" style="color:var(--accent)">contact@axecstudio.com</a></span>
+  </div>
+  <div class="flinks">
+    <a href="https://murmure-sooty.vercel.app" data-fr="L'app" data-en="The app">L'app</a>
+    <a href="https://www.axecstudio.com" data-fr="Axe C Studio" data-en="Axe C Studio">Axe C Studio</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------- FR/EN ---------- */
+var lang = localStorage.getItem('wm_site_lang') || 'fr';
+function applyLang(l){
+  lang = l; localStorage.setItem('wm_site_lang', l);
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-fr]').forEach(function(el){
+    el.innerHTML = el.dataset[l === 'fr' ? 'fr' : 'en'];
+  });
+  document.getElementById('btnFR').classList.toggle('on', l === 'fr');
+  document.getElementById('btnEN').classList.toggle('on', l === 'en');
+  renderPacks(); buildMarquee();
+}
+document.getElementById('btnFR').onclick = function(){ applyLang('fr'); };
+document.getElementById('btnEN').onclick = function(){ applyLang('en'); };
+
+/* ---------- marquee ---------- */
+function buildMarquee(){
+  var items = lang === 'fr'
+    ? ['46 sons','6 packs','Minuteur avec fondu','100 % hors-ligne','Sans compte','Bilingue FR/EN','Boucles parfaites']
+    : ['46 sounds','6 packs','Sleep timer with fade','Fully offline','No account needed','Bilingual FR/EN','Seamless loops'];
+  var half = items.map(function(t){ return '<span>'+t+'</span><b>•</b>'; }).join('');
+  document.getElementById('marqueeTrack').innerHTML = half + half;
+}
+
+/* ---------- packs ---------- */
+var PACKS = [
+  { key:'orage', fr:'Orage', en:'Storm',
+    fr_sounds:'Pluie battante · Tonnerre proche · Pluie sur vitre · Vent de tempête · Grêle · Ruisseau en crue',
+    en_sounds:'Heavy rain · Close thunder · Rain on glass · Storm wind · Hail · Rushing stream',
+    art:'<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#1c3038"/><path d="M40 70 L90 70 L70 100 L110 100 L60 130 L50 95 L75 95 Z" fill="#7cc3d3" opacity=".9" transform="translate(20,-20)"/><circle cx="230" cy="35" r="22" fill="#242e3d"/><circle cx="205" cy="42" r="16" fill="#242e3d"/></svg>' },
+  { key:'boreale', fr:'Forêt boréale', en:'Boreal forest',
+    fr_sounds:'Huard · Vent dans les pins · Ruisseau forestier · Branches qui craquent · Pluie en forêt · Mésanges',
+    en_sounds:'Loon · Wind in the pines · Forest stream · Cracking branches · Forest rain · Chickadees',
+    art:'<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#14231f"/><path d="M60 110 L60 60 L45 60 L60 35 L52 35 L68 10 L84 35 L76 35 L91 60 L76 60 L76 110 Z" fill="#2f7d8c"/><path d="M150 110 L150 55 L132 55 L150 28 L140 28 L160 5 L180 28 L170 28 L188 55 L170 55 L170 110 Z" fill="#7cc3d3" opacity=".75"/><path d="M235 110 L235 65 L220 65 L235 40 L227 40 L243 18 L259 40 L251 40 L266 65 L251 65 L251 110 Z" fill="#2f7d8c" opacity=".6"/></svg>' },
+  { key:'japon', fr:'Jardin japonais', en:'Japanese garden',
+    fr_sounds:'Fontaine de bambou · Carillon à vent · Ruisseau zen · Cigales · Vent dans les bambous · Bol chantant',
+    en_sounds:'Bamboo fountain · Wind chime · Zen stream · Cicadas · Wind in bamboo · Singing bowl',
+    art:'<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#1c3038"/><circle cx="150" cy="60" r="30" fill="#7cc3d3" opacity=".85"/><rect x="60" y="20" width="14" height="80" fill="#2f7d8c"/><rect x="226" y="20" width="14" height="80" fill="#2f7d8c"/><rect x="52" y="14" width="196" height="12" fill="#2f7d8c"/></svg>' },
+  { key:'cote', fr:'Côte sauvage', en:'Wild coast',
+    fr_sounds:'Vagues sur les rochers · Vent côtier · Mouettes · Corne de brume · Galets roulés · Pluie fine',
+    en_sounds:'Waves on rocks · Coastal wind · Seagulls · Foghorn · Rolling pebbles · Drizzle',
+    art:'<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#101d26"/><path d="M0 70 q25-18 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 V120 H0 Z" fill="#2f7d8c" opacity=".8"/><path d="M0 85 q25-18 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 V120 H0 Z" fill="#7cc3d3" opacity=".5"/><path d="M210 40 l14 0 l-7 12 z M240 30 l10 0 l-5 9 z" fill="#edeae3" opacity=".8"/></svg>' },
+  { key:'camp', fr:'Nuit au camp', en:'Night at camp',
+    fr_sounds:'Feu de camp · Hibou · Pluie sur la tente · Vent dans les feuilles · Bois qui craque · Loup lointain',
+    en_sounds:'Campfire · Owl · Rain on a tent · Wind in leaves · Creaking wood · Distant wolf',
+    art:'<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#141a26"/><circle cx="248" cy="26" r="14" fill="#edeae3" opacity=".85"/><path d="M150 95 L120 60 L180 60 Z" fill="#2f7d8c"/><path d="M150 78 c6-10 2-16 -4-22 c-2 8 -8 10 -6 20 c1 6 8 6 10 2z" fill="#7cc3d3"/><circle cx="60" cy="30" r="2" fill="#edeae3"/><circle cx="100" cy="55" r="1.6" fill="#edeae3"/><circle cx="200" cy="70" r="2" fill="#edeae3"/></svg>' },
+  { key:'tropical', fr:'Pluie tropicale', en:'Tropical rain',
+    fr_sounds:'Averse tropicale · Grenouilles · Oiseaux tropicaux · Ruisseau de jungle · Vent dans les palmiers · Cascade',
+    en_sounds:'Tropical downpour · Frogs · Tropical birds · Jungle stream · Wind in palms · Waterfall',
+    art:'<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#12261f"/><path d="M150 110 C150 70 130 55 90 50 C130 45 145 60 150 30 C155 60 170 45 210 50 C170 55 150 70 150 110" fill="#2f7d8c"/><path d="M150 110 C150 80 140 68 115 62 C140 58 148 68 150 45 C152 68 160 58 185 62 C160 68 150 80 150 110" fill="#7cc3d3" opacity=".7"/><path d="M40 20 l-6 14 M70 14 l-6 14 M250 20 l-6 14" stroke="#7cc3d3" stroke-width="4" stroke-linecap="round" opacity=".6"/></svg>' },
+];
+function renderPacks(){
+  var grid = document.getElementById('packGrid');
+  if(!grid) return;
+  grid.innerHTML = PACKS.map(function(p){
+    return '<div class="pack rv in">'
+      + '<div class="art">'+p.art+'</div>'
+      + '<h3>'+(lang==='fr'?p.fr:p.en)+'</h3>'
+      + '<div class="sounds">'+(lang==='fr'?p.fr_sounds:p.en_sounds)+'</div>'
+      + '<div class="buy"><span class="price">2,99&nbsp;$</span>'
+      + '<a class="btn small ghost" href="https://murmure-sooty.vercel.app">'+(lang==='fr'?'Débloquer':'Unlock')+'</a></div>'
+      + '</div>';
+  }).join('');
+}
+
+/* ---------- vagues canvas ---------- */
+(function(){
+  var cv = document.getElementById('waves'), ctx = cv.getContext('2d');
+  var W, H, t = 0, amp = 1, targetAmp = 1;
+  function size(){ W = cv.width = cv.offsetWidth; H = cv.height = cv.offsetHeight; }
+  size(); window.addEventListener('resize', size);
+  var layers = [
+    { y:.62, a:26, s:.006, sp:.014, c:'rgba(124,195,211,.16)' },
+    { y:.68, a:34, s:.004, sp:-.010, c:'rgba(47,125,140,.20)' },
+    { y:.75, a:44, s:.003, sp:.007, c:'rgba(124,195,211,.10)' }
+  ];
+  function draw(){
+    t += .016; amp += (targetAmp - amp) * .04;
+    ctx.clearRect(0,0,W,H);
+    layers.forEach(function(L){
+      ctx.beginPath();
+      for(var x=0; x<=W; x+=6){
+        var y = H*L.y + Math.sin(x*L.s + t*L.sp*60)*L.a*amp + Math.sin(x*L.s*2.3 + t*L.sp*38)*L.a*.4*amp;
+        x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      }
+      ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath();
+      ctx.fillStyle = L.c; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+  window.__wavesAmp = function(v){ targetAmp = v; };
+})();
+
+/* ---------- démo mixeur (Web Audio) ---------- */
+(function(){
+  var AC = null, demo = document.getElementById('demo');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.scard'));
+  var states = {};
+  cards.forEach(function(card){
+    states[card.dataset.sound] = { card:card, buffer:null, src:null, gain:null, playing:false, loading:false };
+    var btn = card.querySelector('.playbtn'), slider = card.querySelector('input[type=range]');
+    btn.addEventListener('click', function(){ toggle(card.dataset.sound); });
+    slider.addEventListener('input', function(){
+      var st = states[card.dataset.sound];
+      if(st.gain) st.gain.gain.value = Math.pow(slider.value/100, 1.6) * .9;
+    });
+  });
+  function ctx_(){
+    if(!AC){ AC = new (window.AudioContext || window.webkitAudioContext)(); }
+    if(AC.state === 'suspended') AC.resume();
+    return AC;
+  }
+  function setIcon(btn, playing){
+    btn.innerHTML = playing
+      ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    btn.classList.toggle('off', !playing);
+  }
+  function toggle(id){
+    var st = states[id], ac = ctx_();
+    var btn = st.card.querySelector('.playbtn'), slider = st.card.querySelector('input[type=range]');
+    if(st.playing){
+      try{ st.src.stop(); }catch(e){}
+      st.playing = false; st.card.classList.remove('playing'); setIcon(btn,false);
+    } else if(st.buffer){
+      startBuf(st, slider, btn);
+    } else if(!st.loading){
+      st.loading = true;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v18" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></path></svg>';
+      fetch(st.card.dataset.file).then(function(r){ return r.arrayBuffer(); })
+        .then(function(ab){ return ac.decodeAudioData(ab); })
+        .then(function(buf){
+          st.buffer = buf; st.loading = false;
+          startBuf(st, slider, btn);
+        }).catch(function(){ st.loading = false; setIcon(btn,false); });
+    }
+    updateDemo();
+  }
+  function startBuf(st, slider, btn){
+    var ac = ctx_();
+    st.src = ac.createBufferSource(); st.src.buffer = st.buffer; st.src.loop = true;
+    st.gain = ac.createGain();
+    st.gain.gain.value = Math.pow(slider.value/100, 1.6) * .9;
+    st.src.connect(st.gain); st.gain.connect(ac.destination);
+    st.src.start();
+    st.playing = true; st.card.classList.add('playing'); setIcon(btn,true);
+    updateDemo();
+  }
+  function updateDemo(){
+    var any = cards.some(function(c){ return states[c.dataset.sound].playing; });
+    demo.classList.toggle('playing', any);
+    if(window.__wavesAmp) window.__wavesAmp(any ? 1.7 : 1);
+  }
+})();
+
+/* ---------- FAQ ---------- */
+document.querySelectorAll('.faq-item').forEach(function(item){
+  var q = item.querySelector('.faq-q'), a = item.querySelector('.faq-a');
+  q.addEventListener('click', function(){
+    var open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(o){
+      o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if(!open){ item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
+  });
+});
+
+/* ---------- reveal ---------- */
+var io = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{ threshold:.12 });
+document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+/* ---------- nav scroll ---------- */
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 30); }, { passive:true });
+
+/* ---------- init ---------- */
+applyLang(lang);
+})();
+</script>
+</body>
+</html>
