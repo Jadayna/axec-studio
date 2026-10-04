@@ -222,6 +222,26 @@ footer a:hover{color:var(--text)}
 /* reveal */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
 .rv.in{opacity:1;transform:none}
+/* presets d'ambiances */
+.presets{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;justify-content:center}
+.presets .lbl{color:var(--muted);font-size:13.5px;font-weight:800}
+.preset{
+  border:1.5px solid rgba(124,195,211,.3);background:transparent;color:var(--text);
+  font:inherit;font-weight:800;font-size:13.5px;padding:9px 18px;border-radius:999px;cursor:pointer;
+  transition:all .2s;
+}
+.preset:hover{border-color:var(--accent);background:rgba(124,195,211,.1);transform:translateY(-1px)}
+.preset.on{background:var(--accent);color:#0e1418;border-color:var(--accent)}
+/* orbes du hero */
+.hero .orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.3;pointer-events:none;z-index:1}
+/* titre avec dégradé animé */
+h1 .hl{background:linear-gradient(120deg,#7cc3d3,#dcf4fa,#7cc3d3);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 7s linear infinite}
+@keyframes sheen{to{background-position:220% center}}
+/* zoom doux sur les visuels des packs */
+.pack .art svg{transition:transform .45s ease}
+.pack:hover .art svg{transform:scale(1.07)}
+.btn:active{transform:scale(.97)}
+
 /* responsive */
 @media(max-width:900px){
   .feat-grid,.pack-grid,.steps{grid-template-columns:1fr 1fr}
@@ -263,6 +283,8 @@ footer a:hover{color:var(--text)}
 
 <header class="hero" id="top">
   <canvas id="waves" aria-hidden="true"></canvas>
+  <div class="orb" style="width:480px;height:480px;background:#2f7d8c;top:-140px;right:-140px"></div>
+  <div class="orb" style="width:380px;height:380px;background:#7cc3d3;bottom:-120px;left:-120px;opacity:.16"></div>
   <div class="hero-inner">
     <span class="eyebrow"><span class="dot"></span><span data-fr="Le mixeur de sons d'ambiance" data-en="The ambient sound mixer">Le mixeur de sons d'ambiance</span></span>
     <h1><span data-fr="Compose ton" data-en="Compose your">Compose ton</span> <span class="hl"><span data-fr="calme." data-en="calm.">calme.</span><svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M2 14 Q 50 4 100 12 T 198 8" stroke="#7cc3d3" stroke-width="5" fill="none" stroke-linecap="round" opacity=".6"/></svg></span></h1>
@@ -303,6 +325,12 @@ footer a:hover{color:var(--text)}
           <input type="range" min="0" max="100" value="70" aria-label="Volume">
         </div>
       </div>
+    </div>
+    <div class="presets">
+      <span class="lbl" data-fr="Ambiances :" data-en="Moods:">Ambiances :</span>
+      <button class="preset" type="button" data-preset="0" data-fr="Nuit d'orage" data-en="Stormy night">Nuit d'orage</button>
+      <button class="preset" type="button" data-preset="1" data-fr="Foyer sous la pluie" data-en="Fireside rain">Foyer sous la pluie</button>
+      <button class="preset" type="button" data-preset="2" data-fr="Marée haute" data-en="High tide">Marée haute</button>
     </div>
     <div class="demo-foot">
       <div class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
@@ -550,7 +578,10 @@ function renderPacks(){
     { y:.75, a:44, s:.003, sp:.007, c:'rgba(124,195,211,.10)' }
   ];
   function draw(){
-    t += .016; amp += (targetAmp - amp) * .04;
+    t += .016;
+    var lvl = (window.__audioLevel ? window.__audioLevel() : 0);
+    var target = 1 + lvl * 2.8;
+    amp += (target - amp) * .08;
     ctx.clearRect(0,0,W,H);
     layers.forEach(function(L){
       ctx.beginPath();
@@ -569,7 +600,7 @@ function renderPacks(){
 
 /* ---------- démo mixeur (Web Audio) ---------- */
 (function(){
-  var AC = null, demo = document.getElementById('demo');
+  var AC = null, analyser = null, _freq = null, demo = document.getElementById('demo');
   var cards = Array.prototype.slice.call(document.querySelectorAll('.scard'));
   var states = {};
   cards.forEach(function(card){
@@ -584,8 +615,17 @@ function renderPacks(){
   function ctx_(){
     if(!AC){ AC = new (window.AudioContext || window.webkitAudioContext)(); }
     if(AC.state === 'suspended') AC.resume();
+    if(!analyser){ analyser = AC.createAnalyser(); analyser.fftSize = 64; analyser.connect(AC.destination); }
     return AC;
   }
+  window.__audioLevel = function(){
+    if(!analyser) return 0;
+    _freq = _freq || new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(_freq);
+    var sum = 0, i;
+    for(i=0;i<_freq.length;i++) sum += _freq[i];
+    return sum / _freq.length / 255;
+  };
   function setIcon(btn, playing){
     btn.innerHTML = playing
       ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'
@@ -593,6 +633,7 @@ function renderPacks(){
     btn.classList.toggle('off', !playing);
   }
   function toggle(id){
+    clearPresets();
     var st = states[id], ac = ctx_();
     var btn = st.card.querySelector('.playbtn'), slider = st.card.querySelector('input[type=range]');
     if(st.playing){
@@ -617,11 +658,33 @@ function renderPacks(){
     st.src = ac.createBufferSource(); st.src.buffer = st.buffer; st.src.loop = true;
     st.gain = ac.createGain();
     st.gain.gain.value = Math.pow(slider.value/100, 1.6) * .9;
-    st.src.connect(st.gain); st.gain.connect(ac.destination);
+    st.src.connect(st.gain); st.gain.connect(ac.destination); st.gain.connect(analyser);
     st.src.start();
     st.playing = true; st.card.classList.add('playing'); setIcon(btn,true);
     updateDemo();
   }
+  var PRESETS = [[85,20,0],[55,0,80],[30,90,0]];
+  var PRESET_IDS = ['pluie-douce','vagues','feu-foyer'];
+  function setPlaying(id, on, vol){
+    var st = states[id]; if(!st) return;
+    var slider = st.card.querySelector('input[type=range]'), btn = st.card.querySelector('.playbtn');
+    if(typeof vol === 'number'){
+      slider.value = vol;
+      if(st.gain) st.gain.gain.value = Math.pow(vol/100, 1.6) * .9;
+    }
+    if(on && !st.playing){ toggle(id); }
+    else if(!on && st.playing){ toggle(id); }
+  }
+  function clearPresets(){
+    document.querySelectorAll('.preset').forEach(function(x){ x.classList.remove('on'); });
+  }
+  document.querySelectorAll('.preset').forEach(function(b){
+    b.addEventListener('click', function(){
+      clearPresets(); b.classList.add('on');
+      var vals = PRESETS[+b.dataset.preset];
+      PRESET_IDS.forEach(function(id, i){ setPlaying(id, vals[i] > 0, vals[i]); });
+    });
+  });
   function updateDemo(){
     var any = cards.some(function(c){ return states[c.dataset.sound].playing; });
     demo.classList.toggle('playing', any);
